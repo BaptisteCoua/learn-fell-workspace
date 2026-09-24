@@ -1,4 +1,4 @@
-# Feature Specification: Comptes et contenu d'apprentissage
+# Feature Specification: Comptes, contenu et révision Leitner
 
 **Feature Branch**: `001-learning-content`
 
@@ -6,13 +6,13 @@
 
 **Status**: Draft
 
-**Input**: User description: "Espace public d'apprentissage (Learn Fell) — feature 001 : comptes et contenu. Visiteurs, inscrits (auteurs) et administrateurs. Inscription par email et mot de passe. Catégories à un niveau gérées par les administrateurs, tags libres posés par l'auteur. Sujets en brouillon puis publiés, contenant des questions recto/verso en texte mis en forme. Lecture libre sans compte, parcours par catégorie et recherche. Signalement des sujets, traité par les administrateurs. La révision Leitner est hors périmètre (feature 002)."
+**Input**: User description: "Espace public d'apprentissage (Learn Fell) — feature 001 : comptes et contenu. Visiteurs, inscrits (auteurs) et administrateurs. Inscription par email et mot de passe. Catégories à un niveau gérées par les administrateurs, tags libres posés par l'auteur. Sujets en brouillon puis publiés, contenant des questions recto/verso en texte mis en forme. Lecture libre sans compte, parcours par catégorie et recherche. Signalement des sujets, traité par les administrateurs. Élargie après la maquette : révision Leitner avec auto-évaluation (5 boîtes, 1, 2, 4, 8 et 16 jours), lancée par « Apprendre ce sujet », séance sur un ou plusieurs sujets choisis."
 
 ## Contexte
 
-Learn Fell est un espace public où chacun peut apprendre n'importe quel sujet par la méthode Leitner. Cette première feature pose les fondations : des comptes, et un catalogue de sujets composés de questions et de réponses, que la communauté écrit et que tout le monde peut consulter.
+Learn Fell est un espace public où chacun peut apprendre n'importe quel sujet par la méthode Leitner. Cette première feature livre le produit de bout en bout : des comptes, un catalogue de sujets composés de questions et de réponses, que la communauté écrit et que tout le monde peut consulter, et la révision de ces questions par la méthode Leitner.
 
-La révision Leitner elle-même (5 boîtes, intervalles de 1, 2, 4, 8 et 16 jours, auto-évaluation « je savais / je ne savais pas ») fera l'objet de la feature 002. Ici, le contenu est seulement structuré pour l'accueillir : chaque question est une carte avec un recto (la question) et un verso (la réponse).
+Chaque question est une carte avec un recto (la question) et un verso (la réponse). Un inscrit choisit les sujets qu'il veut apprendre ; leurs cartes circulent alors entre 5 boîtes, révisées tous les 1, 2, 4, 8 et 16 jours, selon qu'il répond « je savais » ou « je ne savais pas ».
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -38,7 +38,7 @@ Un visiteur arrive sur Learn Fell sans compte. Il parcourt les catégories, ouvr
 
 Un visiteur crée un compte avec son adresse email et un mot de passe saisi deux fois, puis confirme son adresse en cliquant sur le lien reçu par email. Tant que l'adresse n'est pas confirmée, le compte est inutilisable. Une fois le compte actif, il se connecte, se déconnecte, et peut réinitialiser son mot de passe s'il l'a oublié.
 
-**Why this priority**: C'est un prérequis à toute création de contenu (story 3), au signalement (story 5) et à la révision Leitner de la feature 002.
+**Why this priority**: C'est un prérequis à toute création de contenu (story 3), au signalement (story 5) et à la révision Leitner (story 6).
 
 **Independent Test**: Créer un compte, vérifier que la connexion est refusée avant la confirmation, confirmer l'email, se déconnecter, se reconnecter, puis réinitialiser le mot de passe via le lien reçu par email.
 
@@ -118,6 +118,29 @@ Un utilisateur inscrit signale un sujet publié qu'il juge inapproprié, en donn
 
 ---
 
+### User Story 6 - Apprendre un sujet avec la méthode Leitner (Priority: P1)
+
+Un inscrit choisit « Apprendre ce sujet » : toutes les cartes du sujet entrent dans sa boîte 1. Chaque jour, il ouvre « Mes révisions », sélectionne un ou plusieurs sujets et lance une séance. Pour chaque carte, il lit le recto, affiche le verso, puis s'auto-évalue : « Je savais » fait monter la carte d'une boîte, « Je ne savais pas » la renvoie en boîte 1.
+
+**Why this priority**: C'est la promesse du produit : apprendre et retenir. Sans révision, Learn Fell n'est qu'un catalogue de fiches.
+
+**Independent Test**: Un inscrit apprend un sujet de 5 questions, fait une séance (3 « je savais », 2 « je ne savais pas »), puis vérifie la répartition dans les boîtes et la date de la prochaine révision de chaque carte.
+
+**Acceptance Scenarios**:
+
+1. **Given** un inscrit sur un sujet publié qu'il n'apprend pas, **When** il choisit « Apprendre ce sujet », **Then** toutes les cartes du sujet entrent dans sa boîte 1, à réviser le jour même, et le sujet apparaît dans « Mes révisions ».
+2. **Given** un visiteur sans compte, **When** il consulte un sujet, **Then** le bouton l'invite à créer un compte ou à se connecter pour apprendre ce sujet.
+3. **Given** « Mes révisions » affiche 3 sujets avec des cartes à réviser, **When** l'inscrit en sélectionne 2 et lance la séance, **Then** la séance contient toutes les cartes à réviser aujourd'hui de ces 2 sujets, et seulement elles.
+4. **Given** une carte en boîte 2, **When** l'inscrit répond « Je savais », **Then** elle passe en boîte 3 et revient dans 4 jours ; l'écran l'indique avant la carte suivante.
+5. **Given** une carte en boîte 4, **When** l'inscrit répond « Je ne savais pas », **Then** elle retourne en boîte 1 et revient le lendemain ; elle n'est pas reposée dans la séance en cours.
+6. **Given** une carte en boîte 5, **When** l'inscrit répond « Je savais », **Then** elle reste en boîte 5 et revient dans 16 jours.
+7. **Given** une séance en cours, **When** l'inscrit la quitte avant la fin, **Then** les réponses déjà données sont conservées, et les cartes non vues restent à réviser.
+8. **Given** la dernière carte d'une séance, **When** l'inscrit y répond, **Then** un bilan affiche le nombre de « je savais » et de « je ne savais pas », la nouvelle répartition dans les boîtes et la date de la prochaine révision.
+9. **Given** aucun des sujets appris n'a de carte à réviser aujourd'hui, **When** l'inscrit ouvre « Mes révisions », **Then** un message l'indique, avec la date de la prochaine révision.
+10. **Given** un sujet appris, **When** l'inscrit choisit « Arrêter d'apprendre » et confirme, **Then** le sujet quitte « Mes révisions » et sa progression est supprimée.
+
+---
+
 ### Edge Cases
 
 - **Un auteur supprime un sujet** : la suppression est définitive, après confirmation. Le sujet et ses questions disparaissent partout, et ses signalements en attente sont clos.
@@ -132,6 +155,11 @@ Un utilisateur inscrit signale un sujet publié qu'il juge inapproprié, en donn
 - **Email non confirmé** : le compte reste inactif. Il ne permet aucune connexion, et donc aucune création ni aucun signalement. Le lien de confirmation peut être renvoyé depuis l'écran de vérification et depuis le message de connexion refusée. Chaque nouvel envoi invalide le lien précédent.
 - **Compte jamais confirmé** : un compte resté inactif 7 jours est supprimé, ce qui libère l'adresse email pour une nouvelle inscription.
 - **Sujet dépublié ou retiré pendant qu'un visiteur le lit** : son prochain chargement affiche « contenu introuvable ».
+- **Échéances** : une carte est à réviser à partir de sa date prévue, au jour près, dans le fuseau de l'utilisateur. Une carte en retard reste à réviser, sans pénalité, jusqu'à ce qu'il y réponde.
+- **L'auteur ajoute une question à un sujet appris** : elle entre en boîte 1 pour tous ceux qui l'apprennent. Une question modifiée garde sa boîte. Une question supprimée disparaît de leur progression.
+- **Sujet appris dépublié, retiré ou supprimé** : ses cartes ne sont plus proposées en révision. S'il est republié ou rétabli puis republié, elles reprennent là où elles en étaient. S'il est supprimé, la progression l'est aussi.
+- **Séance interrompue** (fermeture, perte de connexion) : chaque réponse est enregistrée dès qu'elle est donnée. Une réponse qui n'a pas pu être enregistrée est signalée, et la carte reste à réviser.
+- **Double clic sur une réponse** : une carte ne change de boîte qu'une fois par présentation.
 
 ## Requirements *(mandatory)*
 
@@ -165,7 +193,7 @@ Un utilisateur inscrit signale un sujet publié qu'il juge inapproprié, en donn
 - **FR-018**: Le système DOIT empêcher de supprimer la dernière question d'un sujet publié.
 - **FR-019**: Le système DOIT permettre à l'auteur de supprimer définitivement son sujet, après confirmation.
 - **FR-020**: Le système DOIT fournir à chaque inscrit la liste de ses propres sujets, avec leur statut et, pour un sujet retiré, le motif du retrait.
-- **FR-021**: Chaque question DOIT être un élément identifiable de façon stable et distinct au sein de son sujet, pour que la feature 002 puisse y rattacher une progression Leitner par utilisateur.
+- **FR-021**: Chaque question DOIT être un élément identifiable de façon stable et distinct au sein de son sujet, pour qu'une progression Leitner par utilisateur puisse s'y rattacher.
 
 **Consultation**
 
@@ -186,6 +214,20 @@ Un utilisateur inscrit signale un sujet publié qu'il juge inapproprié, en donn
 - **FR-033**: L'auteur d'un sujet retiré NE DOIT PAS pouvoir le republier.
 - **FR-034**: Le système DOIT conserver l'historique des décisions de modération : qui, quand, quelle décision, quel motif.
 
+**Révision Leitner**
+
+- **FR-041**: Le système DOIT permettre à un inscrit d'apprendre un sujet publié : toutes ses cartes entrent dans la boîte 1 de cet inscrit, à réviser le jour même. Un visiteur sans compte est invité à se connecter ou à créer un compte.
+- **FR-042**: Chaque carte apprise DOIT avoir, pour chaque inscrit, une boîte (de 1 à 5) et une date de prochaine révision. L'intervalle dépend de la boîte d'arrivée : 1 jour (boîte 1), 2 jours (boîte 2), 4 jours (boîte 3), 8 jours (boîte 4), 16 jours (boîte 5).
+- **FR-043**: Le système DOIT fournir une page « Mes révisions » qui liste les sujets appris, avec pour chacun le nombre de cartes à réviser aujourd'hui, la répartition dans les 5 boîtes et la date de la prochaine révision.
+- **FR-044**: Le système DOIT permettre de sélectionner un ou plusieurs sujets appris et de lancer une séance, qui contient toutes les cartes à réviser aujourd'hui de ces sujets, des plus en retard aux plus récentes.
+- **FR-045**: Pendant une séance, le système DOIT montrer le recto, puis le verso à la demande, et proposer deux réponses : « Je savais » et « Je ne savais pas ». La réponse n'est possible qu'une fois le verso affiché.
+- **FR-046**: « Je savais » DOIT faire monter la carte d'une boîte (une carte en boîte 5 y reste). « Je ne savais pas » DOIT la renvoyer en boîte 1. La carte n'est pas reposée dans la même séance.
+- **FR-047**: Après chaque réponse, le système DOIT indiquer la nouvelle boîte de la carte et quand elle reviendra.
+- **FR-048**: Chaque réponse DOIT être enregistrée dès qu'elle est donnée. Quitter une séance ne perd aucune réponse déjà donnée.
+- **FR-049**: En fin de séance, le système DOIT afficher un bilan : le nombre de « je savais » et de « je ne savais pas », la répartition dans les boîtes et la date de la prochaine révision.
+- **FR-050**: Le système DOIT permettre d'arrêter d'apprendre un sujet, après confirmation. Sa progression est alors supprimée.
+- **FR-051**: Le système DOIT tenir la progression à jour quand l'auteur modifie un sujet appris : une question ajoutée entre en boîte 1, une question supprimée sort de la progression. Les cartes d'un sujet dépublié ou retiré sont mises en pause, puis reprennent à sa republication.
+
 **Transverse**
 
 - **FR-035**: Toute l'interface DOIT être en français, en vouvoyant l'utilisateur.
@@ -201,9 +243,12 @@ Un utilisateur inscrit signale un sujet publié qu'il juge inapproprié, en donn
 - **Catégorie** : une rubrique de premier niveau, avec un nom unique et une position d'affichage. Elle contient des sujets.
 - **Tag** : un mot-clé libre et normalisé, partagé entre les sujets. Un sujet en porte de 0 à 10.
 - **Sujet** : un ensemble de questions sur un thème, avec un titre, une description, un auteur, une catégorie, des tags, un statut (brouillon, publié ou retiré), une date de publication et, s'il est retiré, un motif de retrait.
-- **Question (carte)** : un élément d'un sujet, avec un recto, un verso et une position dans le sujet. C'est l'unité que la révision Leitner de la feature 002 fera circuler entre les boîtes.
+- **Question (carte)** : un élément d'un sujet, avec un recto, un verso et une position dans le sujet. C'est l'unité que la révision Leitner fait circuler entre les boîtes.
 - **Signalement** : l'alerte d'un utilisateur sur un sujet, avec un motif, un commentaire facultatif, une date et un état (en attente ou clos).
 - **Décision de modération** : l'action d'un administrateur sur un sujet (ignorer, retirer, rétablir), avec son auteur, sa date et son motif.
+- **Apprentissage** : le fait qu'un inscrit apprend un sujet, avec la date à laquelle il a commencé.
+- **Progression d'une carte** : pour un inscrit et une question, la boîte actuelle (1 à 5), la date de prochaine révision et la date de la dernière réponse.
+- **Réponse de révision** : une auto-évaluation donnée pendant une séance (« je savais » ou « je ne savais pas »), avec sa date, la boîte de départ et la boîte d'arrivée. Elle sert au bilan de fin de séance.
 
 ## Success Criteria *(mandatory)*
 
@@ -216,11 +261,13 @@ Un utilisateur inscrit signale un sujet publié qu'il juge inapproprié, en donn
 - **SC-005**: La recherche et l'ouverture d'un sujet affichent leur résultat en moins de 2 secondes pour 95 % des requêtes, avec un catalogue de 10 000 sujets et 500 000 questions.
 - **SC-006**: Aucun brouillon ni sujet retiré n'est accessible à une personne non autorisée. Ceci est vérifié par des tests qui couvrent chaque accès (liste, recherche, adresse directe).
 - **SC-007**: Un signalement apparaît dans la file de modération dès qu'il est envoyé, et 100 % des décisions de modération sont retrouvables dans l'historique.
-- **SC-008**: Les parcours principaux (consulter, s'inscrire, créer, publier, signaler) fonctionnent sur un téléphone de 360 px de large, sans défilement horizontal.
+- **SC-008**: Les parcours principaux (consulter, s'inscrire, créer, publier, signaler, réviser) fonctionnent sur un téléphone de 360 px de large, sans défilement horizontal.
+- **SC-009**: Une séance de 20 cartes se termine en moins de 5 minutes, sans temps d'attente perceptible entre deux cartes.
+- **SC-010**: 100 % des réponses donnent la boîte et la date de prochaine révision prévues par FR-042 et FR-046. Ceci est vérifié par des tests qui couvrent chaque boîte et chaque réponse.
 
 ## Assumptions
 
-- **Hors périmètre, pour la feature 002 et au-delà** : la révision Leitner et la progression par utilisateur, les favoris et abonnements à un sujet, les commentaires et notes de sujet, les images dans les questions, l'import et l'export de questions, les notifications par email à l'auteur lors d'une modération, la suspension de comptes.
+- **Hors périmètre, pour une feature ultérieure** : les rappels et notifications de révision, l'annulation d'une réponse donnée, les statistiques d'apprentissage au-delà du bilan de séance, les favoris et abonnements à un sujet, les commentaires et notes de sujet, les images dans les questions, l'import et l'export de questions, les notifications par email à l'auteur lors d'une modération, la suspension de comptes.
 - **Connexion avec Google** : elle est prévue dans une feature ultérieure. Dans la 001, les écrans d'inscription et de connexion affichent déjà un bouton « Continuer avec Google », marqué « Bientôt » et désactivé.
 - **Suppression de compte** : elle n'est pas couverte ici, mais elle est obligatoire au regard du RGPD avant l'ouverture au public. Elle sera traitée dans une feature dédiée avant la mise en production.
 - **Premier administrateur** : il est créé à la mise en service, par l'équipe technique. Le produit ne fournit aucun écran pour promouvoir un utilisateur administrateur dans cette feature.

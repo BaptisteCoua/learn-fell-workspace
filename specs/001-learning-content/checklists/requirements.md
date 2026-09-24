@@ -35,4 +35,5 @@
 - Valeurs par défaut prises sans question, à relire : les limites de taille, 5 échecs de connexion, un lien de réinitialisation de 60 minutes, un mot de passe de 8 caractères, un sujet retiré qui ne peut pas être republié par son auteur, et une session de 30 jours.
 - La suppression de compte (RGPD) est hors périmètre, mais devra être livrée avant l'ouverture au public.
 - Révisé après la maquette : un compte reste inactif jusqu'à la confirmation de l'email (lien de 24 heures, purge à 7 jours), le mot de passe est saisi deux fois, et la connexion Google est affichée « Bientôt », pour une feature ultérieure.
+- Élargi après la maquette : la révision Leitner entre dans la 001 (story 6, FR-041 à FR-051). Choix du développeur : bouton « Apprendre ce sujet », séance sur un ou plusieurs sujets sélectionnés, une carte en boîte 5 y reste, une erreur renvoie en boîte 1 pour le lendemain. Valeurs par défaut à relire : échéances au jour près sans pénalité de retard, ordre de séance du plus en retard au plus récent, progression supprimée quand on arrête d'apprendre.
 - FR-036 (installable sur un téléphone) exprime un besoin utilisateur, pas un choix technique.
