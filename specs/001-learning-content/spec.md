@@ -190,6 +190,10 @@ Un utilisateur inscrit signale un sujet publié qu'il juge inapproprié, en donn
 
 - **FR-035**: Toute l'interface DOIT être en français, en vouvoyant l'utilisateur.
 - **FR-036**: Le produit DOIT être utilisable sur mobile et sur ordinateur, et installable sur l'écran d'accueil d'un téléphone.
+- **FR-037**: Le produit DOIT proposer son installation sur l'écran d'accueil : une invitation que l'on peut accepter ou repousser sur les navigateurs qui le permettent, et des instructions pas à pas sur iPhone. L'installation reste accessible à tout moment depuis le menu du compte.
+- **FR-038**: Une fois installé, le produit DOIT s'ouvrir en plein écran, sans la barre du navigateur, sur un écran de lancement aux couleurs de Learn Fell, puis sur le catalogue.
+- **FR-039**: Sans connexion, le produit DOIT afficher un écran « Vous êtes hors ligne » avec un bouton pour réessayer. Si la connexion se perd sur une page déjà affichée, un bandeau l'indique, les actions qui enregistrent (enregistrer, publier, signaler) sont suspendues, et un message confirme le retour en ligne.
+- **FR-040**: Quand une nouvelle version du produit est disponible, l'utilisateur DOIT en être informé et pouvoir mettre à jour tout de suite ou plus tard.
 
 ### Key Entities
 
@@ -224,4 +228,4 @@ Un utilisateur inscrit signale un sujet publié qu'il juge inapproprié, en donn
 - **Un sujet a un seul auteur** : la co-écriture n'est pas prévue.
 - **Nom affiché** : il est public et visible sur les sujets de l'auteur. L'adresse email n'est jamais affichée publiquement.
 - **Mot de passe** : 8 caractères minimum, sans autre règle de composition, conformément aux recommandations actuelles. Une connexion reste ouverte 30 jours sur un même appareil, sauf déconnexion.
-- **Consultation hors ligne** : l'installation sur l'écran d'accueil est attendue, mais la consultation hors ligne ne l'est pas dans cette feature.
+- **Consultation hors ligne** : l'installation sur l'écran d'accueil est attendue, mais la consultation hors ligne ne l'est pas dans cette feature. Hors ligne, seule la page déjà affichée reste lisible (FR-039).
