@@ -61,10 +61,9 @@ en accès direct.
 |---|---|---|---|---|
 | `publish` | `subject_id` | auteur | `draft` → `published` (FR-016) | 422 `subject_has_no_question`, 422 `subject_retired` |
 | `unpublish` | `subject_id` | auteur | `published` → `draft` (FR-017) | |
-| `retire` | `subject_id`, `reason` | `subjects.moderate` | → `retired`, signalements clos, décision journalisée (FR-031, FR-032) | 422 `reason_required` |
-| `restore` | `subject_id` | `subjects.moderate` | `retired` → `draft`, décision journalisée (FR-032) | |
-| `learn` | `subject_id` | inscrit | crée l'apprentissage et une progression en boîte 1, due aujourd'hui, par question (FR-041) | 409 `already_learning` |
-| `stop-learning` | `subject_id` | inscrit | supprime l'apprentissage et ses progressions (FR-050) | |
+
+Retirer et rétablir passent par `moderation-decisions` ; apprendre et arrêter d'apprendre passent
+par `learnings`. Ainsi, aucune couche n'ajoute d'action sur la ressource d'une autre couche.
 
 ### questions
 
@@ -85,20 +84,31 @@ en accès direct.
   `report_already_pending` (FR-028).
 - **Lecture** : `reports.review` ; filtre `status = pending`, groupé par sujet côté web, tri du plus
   ancien au plus récent (FR-030).
-- **Action `ignore`** : champ `subject_id`, clôt tous ses signalements en attente, décision
-  `ignored` journalisée (FR-031).
+- Ignorer les signalements d'un sujet passe par `moderation-decisions` (décision `ignored`).
 
 ### moderation-decisions
 
 - **Champs** : `id`, `subject_id`, `subject_title`, `decision`, `reason`, `created_at`.
   **Relations** : `admin` (`display_name`).
-- **Lecture seule**, permission `moderation.history.view` ; filtre par `decision` (FR-034).
+- **Création** (permission `subjects.moderate`) : c'est l'acte de modération lui-même.
+
+| `decision` | Champs | Effet | Erreurs |
+|---|---|---|---|
+| `ignored` | `subject_id` | clôt les signalements en attente du sujet, qui reste publié (FR-031) | |
+| `retired` | `subject_id`, `reason` | sujet `retired` avec son motif, signalements clos (FR-031, FR-032) | 422 `reason_required` |
+| `restored` | `subject_id` | sujet `retired` → `draft` (FR-032) | |
+
+- **Lecture** : permission `moderation.history.view` ; filtre par `decision` ; jamais modifiée ni
+  supprimée (FR-034).
 
 ### learnings
 
 - **Champs** : `id`, `subject_id`, `created_at`. **Relations** : `subject`. Comptages calculés :
   `due_today_count`, `box_1_count` à `box_5_count`, `next_review_on` (le plus proche).
 - **Lecture** : l'utilisateur connecté, ses apprentissages uniquement (FR-043).
+- **Création** (`mutate`, `subject_id`) : apprendre un sujet publié ; une progression en boîte 1,
+  due aujourd'hui, par question (FR-041) ; 409 `already_learning`.
+- **Suppression** : arrêter d'apprendre ; supprime les progressions et les réponses (FR-050).
 
 ### card-progress
 

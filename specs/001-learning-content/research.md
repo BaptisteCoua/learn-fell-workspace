@@ -88,8 +88,9 @@ contexte technique du plan sont toutes tranchées ici.
 ## R7. Surface d'API
 
 - **Décision** : `lomkit/laravel-rest-api` pour toutes les ressources et leurs actions (publier,
-  dépublier, retirer, rétablir, réordonner, apprendre, arrêter d'apprendre, répondre, ignorer les
-  signalements). Les seuls contrôleurs classiques sont ceux de Fortify et Sanctum. Détail dans
+  dépublier, réordonner, répondre). Apprendre et arrêter d'apprendre sont la création et la
+  suppression d'un `learning` ; retirer, rétablir et ignorer sont la création d'une
+  `moderation-decision`. Aucune couche n'ajoute ainsi d'action sur la ressource d'une autre. Les seuls contrôleurs classiques sont ceux de Fortify et Sanctum. Détail dans
   [contracts/api.md](contracts/api.md).
 - **Accès** : `lomkit/laravel-access-control`, une `Control` par modèle avec ses périmètres ; les
   visiteurs non connectés passent par le périmètre « public » (sujets publiés uniquement).
