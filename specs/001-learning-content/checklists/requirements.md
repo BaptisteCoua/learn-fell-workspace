@@ -32,6 +32,7 @@
 ## Notes
 
 - Choix structurants validés avec le développeur pendant la prise de besoin : création par les inscrits et catégories réservées aux admins, brouillon puis publication, texte mis en forme, lecture libre sans compte, catégorie et tags, parcours et recherche, file de signalement traitée par les admins, comptes par email et mot de passe dans cette feature.
-- Valeurs par défaut prises sans question, à relire : les limites de taille, 5 échecs de connexion, un lien de réinitialisation de 60 minutes, un mot de passe de 8 caractères, la confirmation d'email exigée pour publier et signaler, un sujet retiré qui ne peut pas être republié par son auteur, et une session de 30 jours.
+- Valeurs par défaut prises sans question, à relire : les limites de taille, 5 échecs de connexion, un lien de réinitialisation de 60 minutes, un mot de passe de 8 caractères, un sujet retiré qui ne peut pas être republié par son auteur, et une session de 30 jours.
 - La suppression de compte (RGPD) est hors périmètre, mais devra être livrée avant l'ouverture au public.
+- Révisé après la maquette : un compte reste inactif jusqu'à la confirmation de l'email (lien de 24 heures, purge à 7 jours), le mot de passe est saisi deux fois, et la connexion Google est affichée « Bientôt », pour une feature ultérieure.
 - FR-036 (installable sur un téléphone) exprime un besoin utilisateur, pas un choix technique.

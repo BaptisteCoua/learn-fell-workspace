@@ -36,20 +36,24 @@ Un visiteur arrive sur Learn Fell sans compte. Il parcourt les catégories, ouvr
 
 ### User Story 2 - Créer un compte et se connecter (Priority: P1)
 
-Un visiteur crée un compte avec son adresse email et un mot de passe, se connecte, se déconnecte, et peut réinitialiser son mot de passe s'il l'a oublié.
+Un visiteur crée un compte avec son adresse email et un mot de passe saisi deux fois, puis confirme son adresse en cliquant sur le lien reçu par email. Tant que l'adresse n'est pas confirmée, le compte est inutilisable. Une fois le compte actif, il se connecte, se déconnecte, et peut réinitialiser son mot de passe s'il l'a oublié.
 
 **Why this priority**: C'est un prérequis à toute création de contenu (story 3), au signalement (story 5) et à la révision Leitner de la feature 002.
 
-**Independent Test**: Créer un compte, confirmer l'email, se déconnecter, se reconnecter, puis réinitialiser le mot de passe via le lien reçu par email.
+**Independent Test**: Créer un compte, vérifier que la connexion est refusée avant la confirmation, confirmer l'email, se déconnecter, se reconnecter, puis réinitialiser le mot de passe via le lien reçu par email.
 
 **Acceptance Scenarios**:
 
-1. **Given** un visiteur, **When** il s'inscrit avec un nom affiché, une adresse email valide et un mot de passe conforme, **Then** son compte est créé, il est connecté, et il reçoit un email de confirmation.
-2. **Given** un compte existe déjà avec cette adresse email, **When** un visiteur tente de s'inscrire avec la même adresse, **Then** l'inscription est refusée avec un message qui l'invite à se connecter ou à réinitialiser son mot de passe.
-3. **Given** un utilisateur inscrit, **When** il saisit un mauvais mot de passe, **Then** la connexion est refusée avec un message générique qui ne révèle pas si l'adresse email existe.
-4. **Given** 5 échecs de connexion consécutifs sur un même compte, **When** une sixième tentative est faite, **Then** elle est bloquée temporairement et un message indique quand réessayer.
-5. **Given** un utilisateur a oublié son mot de passe, **When** il demande une réinitialisation, **Then** il reçoit un lien valable 60 minutes et à usage unique, et le message affiché est le même que l'adresse existe ou non.
-6. **Given** un utilisateur connecté, **When** il se déconnecte, **Then** il ne peut plus accéder aux pages réservées aux inscrits sans se reconnecter.
+1. **Given** un visiteur, **When** il s'inscrit avec un nom affiché, une adresse email valide et un mot de passe conforme saisi deux fois à l'identique, **Then** son compte est créé mais inactif, il n'est pas connecté, il reçoit un email de confirmation, et un écran l'invite à vérifier ses emails.
+2. **Given** un visiteur saisit deux mots de passe différents, **When** il valide l'inscription, **Then** l'inscription est refusée avec un message sous le champ de confirmation.
+3. **Given** un compte inactif, **When** son propriétaire clique sur le lien de confirmation dans les 24 heures, **Then** le compte devient actif, il est connecté, et il voit la confirmation « Adresse confirmée ».
+4. **Given** un compte inactif, **When** son propriétaire tente de se connecter, **Then** la connexion est refusée avec un message qui l'invite à confirmer son adresse et lui propose de renvoyer le lien.
+5. **Given** un lien de confirmation expiré ou déjà utilisé, **When** l'utilisateur l'ouvre, **Then** un message l'indique et lui propose de recevoir un nouveau lien.
+6. **Given** un compte existe déjà avec cette adresse email, **When** un visiteur tente de s'inscrire avec la même adresse, **Then** l'inscription est refusée avec un message qui l'invite à se connecter ou à réinitialiser son mot de passe. Si ce compte existant est encore inactif, le message propose à la place de renvoyer le lien de confirmation.
+7. **Given** un utilisateur inscrit, **When** il saisit un mauvais mot de passe, **Then** la connexion est refusée avec un message générique qui ne révèle pas si l'adresse email existe.
+8. **Given** 5 échecs de connexion consécutifs sur un même compte, **When** une sixième tentative est faite, **Then** elle est bloquée temporairement et un message indique quand réessayer.
+9. **Given** un utilisateur a oublié son mot de passe, **When** il demande une réinitialisation, **Then** il reçoit un lien valable 60 minutes et à usage unique, et le message affiché est le même que l'adresse existe ou non.
+10. **Given** un utilisateur connecté, **When** il se déconnecte, **Then** il ne peut plus accéder aux pages réservées aux inscrits sans se reconnecter.
 
 ---
 
@@ -125,7 +129,8 @@ Un utilisateur inscrit signale un sujet publié qu'il juge inapproprié, en donn
 - **Recherche** : elle ne tient compte ni de la casse ni des accents. Une recherche vide ou d'un seul caractère n'est pas lancée.
 - **Pagination** : les listes de catégories, les résultats de recherche et la file de modération sont paginés, à 20 éléments par page.
 - **Lien de réinitialisation expiré ou déjà utilisé** : un message l'indique et propose d'en demander un nouveau.
-- **Email non confirmé** : l'utilisateur peut créer et préparer des brouillons, mais doit confirmer son email pour publier un sujet ou en signaler un. Le lien de confirmation peut être renvoyé.
+- **Email non confirmé** : le compte reste inactif. Il ne permet aucune connexion, et donc aucune création ni aucun signalement. Le lien de confirmation peut être renvoyé depuis l'écran de vérification et depuis le message de connexion refusée. Chaque nouvel envoi invalide le lien précédent.
+- **Compte jamais confirmé** : un compte resté inactif 7 jours est supprimé, ce qui libère l'adresse email pour une nouvelle inscription.
 - **Sujet dépublié ou retiré pendant qu'un visiteur le lit** : son prochain chargement affiche « contenu introuvable ».
 
 ## Requirements *(mandatory)*
@@ -134,8 +139,8 @@ Un utilisateur inscrit signale un sujet publié qu'il juge inapproprié, en donn
 
 **Comptes**
 
-- **FR-001**: Le système DOIT permettre à un visiteur de créer un compte avec un nom affiché, une adresse email unique et un mot de passe d'au moins 8 caractères.
-- **FR-002**: Le système DOIT envoyer un email de confirmation à l'inscription, et permettre de le renvoyer.
+- **FR-001**: Le système DOIT permettre à un visiteur de créer un compte avec un nom affiché, une adresse email unique et un mot de passe d'au moins 8 caractères, saisi deux fois. L'inscription est refusée si les deux saisies diffèrent.
+- **FR-002**: Le système DOIT envoyer à l'inscription un email contenant un lien de confirmation, valable 24 heures et à usage unique, et permettre de le renvoyer. Un compte n'est actif qu'après ce clic. Un compte inactif NE DOIT PAS pouvoir se connecter, et il est supprimé au bout de 7 jours.
 - **FR-003**: Le système DOIT permettre à un utilisateur de se connecter et de se déconnecter.
 - **FR-004**: Le système DOIT limiter les tentatives de connexion : un blocage temporaire s'applique après 5 échecs consécutifs sur un même compte.
 - **FR-005**: Le système DOIT permettre de réinitialiser le mot de passe via un lien envoyé par email, valable 60 minutes et à usage unique.
@@ -155,7 +160,7 @@ Un utilisateur inscrit signale un sujet publié qu'il juge inapproprié, en donn
 - **FR-013**: Un sujet DOIT avoir l'un de ces trois statuts : brouillon, publié ou retiré. Un sujet nouvellement créé est un brouillon.
 - **FR-014**: Le système DOIT permettre à l'auteur d'ajouter, modifier, réordonner et supprimer les questions de son sujet, quel que soit son statut. Chaque question a un recto (la question) et un verso (la réponse).
 - **FR-015**: Le recto et le verso DOIVENT accepter du texte mis en forme, limité au gras, à l'italique, aux listes, au code (en ligne et en bloc) et aux liens. Toute autre mise en forme ou tout contenu exécutable est retiré à l'enregistrement.
-- **FR-016**: Le système DOIT permettre à l'auteur de publier un brouillon qui contient au moins une question, sous réserve que son email soit confirmé.
+- **FR-016**: Le système DOIT permettre à l'auteur de publier un brouillon qui contient au moins une question.
 - **FR-017**: Le système DOIT permettre à l'auteur de dépublier son sujet publié, qui redevient un brouillon.
 - **FR-018**: Le système DOIT empêcher de supprimer la dernière question d'un sujet publié.
 - **FR-019**: Le système DOIT permettre à l'auteur de supprimer définitivement son sujet, après confirmation.
@@ -172,7 +177,7 @@ Un utilisateur inscrit signale un sujet publié qu'il juge inapproprié, en donn
 
 **Signalement et modération**
 
-- **FR-027**: Le système DOIT permettre à un utilisateur inscrit dont l'email est confirmé de signaler un sujet publié dont il n'est pas l'auteur, avec un motif pris dans une liste fermée (contenu inapproprié, contenu erroné, spam, droits d'auteur, autre) et un commentaire facultatif d'au plus 500 caractères.
+- **FR-027**: Le système DOIT permettre à un utilisateur inscrit de signaler un sujet publié dont il n'est pas l'auteur, avec un motif pris dans une liste fermée (contenu inapproprié, contenu erroné, spam, droits d'auteur, autre) et un commentaire facultatif d'au plus 500 caractères.
 - **FR-028**: Le système DOIT refuser un second signalement d'un même utilisateur sur un même sujet tant que le premier est en attente.
 - **FR-029**: Un sujet signalé DOIT rester visible tant qu'aucun administrateur n'a statué.
 - **FR-030**: Le système DOIT fournir aux administrateurs une file des sujets qui ont des signalements en attente. Ils y sont regroupés par sujet et triés du plus ancien signalement au plus récent.
@@ -211,7 +216,8 @@ Un utilisateur inscrit signale un sujet publié qu'il juge inapproprié, en donn
 
 ## Assumptions
 
-- **Hors périmètre, pour la feature 002 et au-delà** : la révision Leitner et la progression par utilisateur, les favoris et abonnements à un sujet, les commentaires et notes de sujet, les images dans les questions, l'import et l'export de questions, les notifications par email à l'auteur lors d'une modération, la suspension de comptes, la connexion par un fournisseur externe (SSO).
+- **Hors périmètre, pour la feature 002 et au-delà** : la révision Leitner et la progression par utilisateur, les favoris et abonnements à un sujet, les commentaires et notes de sujet, les images dans les questions, l'import et l'export de questions, les notifications par email à l'auteur lors d'une modération, la suspension de comptes.
+- **Connexion avec Google** : elle est prévue dans une feature ultérieure. Dans la 001, les écrans d'inscription et de connexion affichent déjà un bouton « Continuer avec Google », marqué « Bientôt » et désactivé.
 - **Suppression de compte** : elle n'est pas couverte ici, mais elle est obligatoire au regard du RGPD avant l'ouverture au public. Elle sera traitée dans une feature dédiée avant la mise en production.
 - **Premier administrateur** : il est créé à la mise en service, par l'équipe technique. Le produit ne fournit aucun écran pour promouvoir un utilisateur administrateur dans cette feature.
 - **Catégories initiales** : un jeu de catégories est fourni à la mise en service, pour que les auteurs puissent créer des sujets dès le premier jour.
