@@ -1,6 +1,8 @@
-# Learn Fell Constitution
+# CINQ Constitution
 
-Learn Fell est un espace public d'apprentissage par la méthode Leitner. Le produit est un back
+> Anciennement « Learn Fell ». Renommé en CINQ le 2026-09-24 (v1.0.1, sans changement de règle).
+
+CINQ est un espace public d'apprentissage par la méthode Leitner. Le produit est un back
 Laravel dans `back/` et un front Nuxt livré en PWA dans `web/`. Il n'a pas d'application native :
 la PWA est son unique expérience mobile.
 
@@ -25,7 +27,7 @@ la PWA est son unique expérience mobile.
 - La logique métier d'un domaine vit dans sa couche et nulle part ailleurs. Une couche ne dépend
   d'une autre qu'à travers ce que cette autre expose.
 
-Raison : les domaines de Learn Fell (comptes, contenu, modération, révision) évoluent séparément ;
+Raison : les domaines de CINQ (comptes, contenu, modération, révision) évoluent séparément ;
 des couches isolées permettent de les faire grandir sans enchevêtrement.
 
 ### III. Paquets imposés et API par contrat
@@ -119,4 +121,4 @@ dans ce calcul est invisible pour l'utilisateur et ruine l'apprentissage.
 - La relecture de chaque merge request vérifie le respect des principes, en particulier les
   principes III, IV et VI.
 
-**Version**: 1.0.0 | **Ratified**: 2026-09-24 | **Last Amended**: 2026-09-24
+**Version**: 1.0.1 | **Ratified**: 2026-09-24 | **Last Amended**: 2026-09-24

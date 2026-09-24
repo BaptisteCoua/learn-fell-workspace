@@ -6,13 +6,13 @@
 
 **Status**: Draft
 
-**Maquette**: [Learn Fell — Design 001](https://claude.ai/artifact/DxQK5ap9dAK6UYGuZURLsP), validée le 2026-09-24. 43 écrans (ordinateur, mobile, PWA), style brutaliste jaune #FACC15 et bleu #3B82F6 sur crème, sans le design system Xefi.
+**Maquette**: [CINQ — Design 001](https://claude.ai/artifact/DxQK5ap9dAK6UYGuZURLsP), validée le 2026-09-24. 43 écrans (ordinateur, mobile, PWA), style brutaliste jaune #FACC15 et bleu #3B82F6 sur crème, sans le design system Xefi.
 
-**Input**: User description: "Espace public d'apprentissage (Learn Fell) — feature 001 : comptes et contenu. Visiteurs, inscrits (auteurs) et administrateurs. Inscription par email et mot de passe. Catégories à un niveau gérées par les administrateurs, tags libres posés par l'auteur. Sujets en brouillon puis publiés, contenant des questions recto/verso en texte mis en forme. Lecture libre sans compte, parcours par catégorie et recherche. Signalement des sujets, traité par les administrateurs. Élargie après la maquette : révision Leitner avec auto-évaluation (5 boîtes, 1, 2, 4, 8 et 16 jours), lancée par « Apprendre ce sujet », séance sur un ou plusieurs sujets choisis."
+**Input**: User description: "Espace public d'apprentissage (CINQ) — feature 001 : comptes et contenu. Visiteurs, inscrits (auteurs) et administrateurs. Inscription par email et mot de passe. Catégories à un niveau gérées par les administrateurs, tags libres posés par l'auteur. Sujets en brouillon puis publiés, contenant des questions recto/verso en texte mis en forme. Lecture libre sans compte, parcours par catégorie et recherche. Signalement des sujets, traité par les administrateurs. Élargie après la maquette : révision Leitner avec auto-évaluation (5 boîtes, 1, 2, 4, 8 et 16 jours), lancée par « Apprendre ce sujet », séance sur un ou plusieurs sujets choisis."
 
 ## Contexte
 
-Learn Fell est un espace public où chacun peut apprendre n'importe quel sujet par la méthode Leitner. Cette première feature livre le produit de bout en bout : des comptes, un catalogue de sujets composés de questions et de réponses, que la communauté écrit et que tout le monde peut consulter, et la révision de ces questions par la méthode Leitner.
+CINQ est un espace public où chacun peut apprendre n'importe quel sujet par la méthode Leitner. Cette première feature livre le produit de bout en bout : des comptes, un catalogue de sujets composés de questions et de réponses, que la communauté écrit et que tout le monde peut consulter, et la révision de ces questions par la méthode Leitner.
 
 Chaque question est une carte avec un recto (la question) et un verso (la réponse). Un inscrit choisit les sujets qu'il veut apprendre ; leurs cartes circulent alors entre 5 boîtes, révisées tous les 1, 2, 4, 8 et 16 jours, selon qu'il répond « je savais » ou « je ne savais pas ».
 
@@ -20,7 +20,7 @@ Chaque question est une carte avec un recto (la question) et un verso (la répon
 
 ### User Story 1 - Consulter le catalogue sans compte (Priority: P1)
 
-Un visiteur arrive sur Learn Fell sans compte. Il parcourt les catégories, ouvre un sujet publié et lit ses questions et leurs réponses. Il peut aussi chercher un sujet par mot-clé.
+Un visiteur arrive sur CINQ sans compte. Il parcourt les catégories, ouvre un sujet publié et lit ses questions et leurs réponses. Il peut aussi chercher un sujet par mot-clé.
 
 **Why this priority**: C'est la vitrine du produit. Sans contenu lisible, il n'y a aucune raison de créer un compte. Cette story se démontre à partir d'un contenu préparé par un administrateur.
 
@@ -124,7 +124,7 @@ Un utilisateur inscrit signale un sujet publié qu'il juge inapproprié, en donn
 
 Un inscrit choisit « Apprendre ce sujet » : toutes les cartes du sujet entrent dans sa boîte 1. Chaque jour, il ouvre « Mes révisions », sélectionne un ou plusieurs sujets et lance une séance. Pour chaque carte, il lit le recto, affiche le verso, puis s'auto-évalue : « Je savais » fait monter la carte d'une boîte, « Je ne savais pas » la renvoie en boîte 1.
 
-**Why this priority**: C'est la promesse du produit : apprendre et retenir. Sans révision, Learn Fell n'est qu'un catalogue de fiches.
+**Why this priority**: C'est la promesse du produit : apprendre et retenir. Sans révision, CINQ n'est qu'un catalogue de fiches.
 
 **Independent Test**: Un inscrit apprend un sujet de 5 questions, fait une séance (3 « je savais », 2 « je ne savais pas »), puis vérifie la répartition dans les boîtes et la date de la prochaine révision de chaque carte.
 
@@ -236,7 +236,7 @@ Un inscrit choisit « Apprendre ce sujet » : toutes les cartes du sujet entrent
 - **FR-036**: Le produit DOIT être utilisable sur mobile et sur ordinateur, et installable sur l'écran d'accueil d'un téléphone.
 - **FR-052**: Sur téléphone, les textes DOIVENT s'adapter à la largeur de l'écran : les titres rétrécissent sur un écran étroit sans déborder, un mot trop long passe à la ligne avec une césure au lieu de sortir de l'écran, le texte courant ne descend jamais sous 12 px, et le réglage de taille de texte du téléphone est respecté.
 - **FR-037**: Le produit DOIT proposer son installation sur l'écran d'accueil : une invitation que l'on peut accepter ou repousser sur les navigateurs qui le permettent, et des instructions pas à pas sur iPhone. L'installation reste accessible à tout moment depuis le menu du compte.
-- **FR-038**: Une fois installé, le produit DOIT s'ouvrir en plein écran, sans la barre du navigateur, sur un écran de lancement aux couleurs de Learn Fell, puis sur le catalogue.
+- **FR-038**: Une fois installé, le produit DOIT s'ouvrir en plein écran, sans la barre du navigateur, sur un écran de lancement aux couleurs de CINQ, puis sur le catalogue.
 - **FR-039**: Sans connexion, le produit DOIT afficher un écran « Vous êtes hors ligne » avec un bouton pour réessayer. Si la connexion se perd sur une page déjà affichée, un bandeau l'indique, les actions qui enregistrent (enregistrer, publier, signaler) sont suspendues, et un message confirme le retour en ligne.
 - **FR-040**: Quand une nouvelle version du produit est disponible, l'utilisateur DOIT en être informé et pouvoir mettre à jour tout de suite ou plus tard.
 

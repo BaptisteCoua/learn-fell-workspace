@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-This is the **spec-kit workspace of Learn Fell**. It holds the specifications for the product, and
+This is the **spec-kit workspace of CINQ**. It holds the specifications for the product, and
 the repositories that implement them are cloned as children of this directory by
 `./bootstrap`.
 
@@ -12,7 +12,7 @@ the repositories that implement them are cloned as children of this directory by
 └── web/           ← independent clone (Nuxt, shipped as a PWA)
 ```
 
-Learn Fell has no native mobile app: the mobile experience is the `web` repo
+CINQ has no native mobile app: the mobile experience is the `web` repo
 installed as a PWA. The front is Nuxt here rather than
 Livewire — a workspace exists because the product spans repositories, which is
 exactly the case a Livewire monolith is not.
