@@ -142,8 +142,8 @@ Un utilisateur inscrit signale un sujet publié qu'il juge inapproprié, en donn
 - **FR-001**: Le système DOIT permettre à un visiteur de créer un compte avec un nom affiché, une adresse email unique et un mot de passe d'au moins 8 caractères, saisi deux fois. L'inscription est refusée si les deux saisies diffèrent.
 - **FR-002**: Le système DOIT envoyer à l'inscription un email contenant un lien de confirmation, valable 24 heures et à usage unique, et permettre de le renvoyer. Un compte n'est actif qu'après ce clic. Un compte inactif NE DOIT PAS pouvoir se connecter, et il est supprimé au bout de 7 jours.
 - **FR-003**: Le système DOIT permettre à un utilisateur de se connecter et de se déconnecter.
-- **FR-004**: Le système DOIT limiter les tentatives de connexion : un blocage temporaire s'applique après 5 échecs consécutifs sur un même compte.
-- **FR-005**: Le système DOIT permettre de réinitialiser le mot de passe via un lien envoyé par email, valable 60 minutes et à usage unique.
+- **FR-004**: Le système DOIT limiter les tentatives de connexion : après 5 échecs consécutifs sur un même compte, la connexion est bloquée pendant 15 minutes, et le message propose de réinitialiser le mot de passe.
+- **FR-005**: Le système DOIT permettre de réinitialiser le mot de passe via un lien envoyé par email, valable 60 minutes et à usage unique. Le nouveau mot de passe est saisi deux fois, et sa validation ferme les sessions ouvertes sur les autres appareils.
 - **FR-006**: Le système NE DOIT PAS révéler si une adresse email possède un compte, ni lors de la connexion ni lors de la demande de réinitialisation.
 - **FR-007**: Le système DOIT distinguer deux rôles : utilisateur inscrit et administrateur.
 
