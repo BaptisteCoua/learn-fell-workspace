@@ -6,6 +6,8 @@
 
 **Status**: Draft
 
+**Maquette**: [Learn Fell — Design 001](https://claude.ai/artifact/DxQK5ap9dAK6UYGuZURLsP), validée le 2026-09-24. 43 écrans (ordinateur, mobile, PWA), style brutaliste jaune #FACC15 et bleu #3B82F6 sur crème, sans le design system Xefi.
+
 **Input**: User description: "Espace public d'apprentissage (Learn Fell) — feature 001 : comptes et contenu. Visiteurs, inscrits (auteurs) et administrateurs. Inscription par email et mot de passe. Catégories à un niveau gérées par les administrateurs, tags libres posés par l'auteur. Sujets en brouillon puis publiés, contenant des questions recto/verso en texte mis en forme. Lecture libre sans compte, parcours par catégorie et recherche. Signalement des sujets, traité par les administrateurs. Élargie après la maquette : révision Leitner avec auto-évaluation (5 boîtes, 1, 2, 4, 8 et 16 jours), lancée par « Apprendre ce sujet », séance sur un ou plusieurs sujets choisis."
 
 ## Contexte
