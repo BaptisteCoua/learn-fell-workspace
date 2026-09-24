@@ -232,6 +232,7 @@ Un inscrit choisit « Apprendre ce sujet » : toutes les cartes du sujet entrent
 
 - **FR-035**: Toute l'interface DOIT être en français, en vouvoyant l'utilisateur.
 - **FR-036**: Le produit DOIT être utilisable sur mobile et sur ordinateur, et installable sur l'écran d'accueil d'un téléphone.
+- **FR-052**: Sur téléphone, les textes DOIVENT s'adapter à la largeur de l'écran : les titres rétrécissent sur un écran étroit sans déborder, un mot trop long passe à la ligne avec une césure au lieu de sortir de l'écran, le texte courant ne descend jamais sous 12 px, et le réglage de taille de texte du téléphone est respecté.
 - **FR-037**: Le produit DOIT proposer son installation sur l'écran d'accueil : une invitation que l'on peut accepter ou repousser sur les navigateurs qui le permettent, et des instructions pas à pas sur iPhone. L'installation reste accessible à tout moment depuis le menu du compte.
 - **FR-038**: Une fois installé, le produit DOIT s'ouvrir en plein écran, sans la barre du navigateur, sur un écran de lancement aux couleurs de Learn Fell, puis sur le catalogue.
 - **FR-039**: Sans connexion, le produit DOIT afficher un écran « Vous êtes hors ligne » avec un bouton pour réessayer. Si la connexion se perd sur une page déjà affichée, un bandeau l'indique, les actions qui enregistrent (enregistrer, publier, signaler) sont suspendues, et un message confirme le retour en ligne.
