@@ -34,3 +34,13 @@ workspace:
 #     setup: bin/setup            # optional; run by ./bootstrap if executable
 
 repos:
+
+  - dir: back
+    url: learn-fell-api.git
+    trunk: main
+    stack: Laravel
+
+  - dir: web
+    url: learn-fell-web.git
+    trunk: main
+    stack: Nuxt
