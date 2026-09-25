@@ -51,16 +51,19 @@ en accès direct.
   description et les tags, sans tenir compte de la casse ni des accents (FR-025).
 - **Tri** : `published_at desc` par défaut dans le catalogue (FR-024). Pagination par 20.
 - **Création** (`mutate`, opération `create`) : inscrit à l'email confirmé ; statut `draft`
-  (FR-012, FR-013). `tags` en `attach` par nom : 10 au plus, normalisés, doublons ignorés.
+  (FR-012, FR-013). Les tags passent par l'action `sync-tags` (ci-dessous).
 - **Modification** : auteur, ou `subjects.moderate` ; interdite à l'auteur sur un sujet `retired`.
 - **Suppression** : auteur, confirmation côté web ; supprime questions, apprentissages et
   progressions, clôt les signalements en attente (FR-019).
 - **Actions** :
 
+Chaque action vise le sujet par `search.filters` (`id`), comme toute action lomkit.
+
 | Action | Champs | Qui | Effet | Erreurs |
 |---|---|---|---|---|
-| `publish` | `subject_id` | auteur | `draft` → `published` (FR-016) | 422 `subject_has_no_question`, 422 `subject_retired` |
-| `unpublish` | `subject_id` | auteur | `published` → `draft` (FR-017) | |
+| `publish` | — | auteur | `draft` → `published` (FR-016) | 422 `subject_has_no_question`, 422 `subject_retired` |
+| `unpublish` | — | auteur | `published` → `draft` (FR-017) | |
+| `sync-tags` | `names[]` | auteur | remplace les tags par ces noms : normalisés, doublons ignorés, créés au besoin, 10 au plus de 30 caractères (FR-011) | 422 `subject_retired` |
 
 Retirer et rétablir passent par `moderation-decisions` ; apprendre et arrêter d'apprendre passent
 par `learnings`. Ainsi, aucune couche n'ajoute d'action sur la ressource d'une autre couche.
@@ -74,7 +77,8 @@ par `learnings`. Ainsi, aucune couche n'ajoute d'action sur la ressource d'une a
   l'enregistrement (FR-014, FR-015) ; 500 questions au plus par sujet.
 - **Suppression** : refusée pour la dernière question d'un sujet `published`, 422
   `last_question_of_published_subject` (FR-018).
-- **Action `reorder`** : champs `subject_id`, `ids[]` (FR-014).
+- **Création** : ajoutée en dernière position ; `position` est fixée par l'API. 422 `question_limit_reached` au-delà de 500.
+- **Action `reorder`** (autonome) : champs `subject_id`, `ids[]` — exactement les questions du sujet, dans le nouvel ordre (FR-014).
 
 ### reports
 
@@ -140,6 +144,7 @@ Chaque refus métier renvoie `{ "code": "<code>", "message": "<texte français>"
 | `category_not_empty` | 422 | FR-010 |
 | `subject_has_no_question` | 422 | FR-016 |
 | `subject_retired` | 422 | FR-033 |
+| `question_limit_reached` | 422 | FR-014 |
 | `last_question_of_published_subject` | 422 | FR-018 |
 | `reason_required` | 422 | FR-031 |
 | `report_already_pending` | 409 | FR-028 |
