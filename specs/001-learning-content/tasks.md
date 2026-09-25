@@ -293,13 +293,13 @@ motif côté auteur, l'impossibilité de le republier et l'entrée dans l'histor
 
 **Purpose**: comportement PWA (FR-037 à FR-040), accessibilité et validation finale.
 
-- [ ] T120 Passer `registerType` à `prompt` et configurer Workbox (`NetworkOnly` pour l'API, page de repli hors ligne) dans `web/technical/Pwa/nuxt.config.ts`
-- [ ] T121 [P] Générer les icônes de la maquette (« 5 » souligné de bleu sur jaune) en 192, 512 et maskable 512 dans `web/technical/Pwa/public/icons/`, et les déclarer dans le manifeste
-- [ ] T122 [P] Créer `web/technical/Pwa/app/components/InstallPrompt.vue` (`beforeinstallprompt`, instructions iPhone, « Plus tard » mémorisé) et l'entrée « Installer l'application » du menu du compte d'après « Installation »
-- [ ] T123 [P] Créer `web/technical/Pwa/app/components/UpdatePrompt.vue` (« Mettre à jour » ou « Plus tard ») et `OfflineBanner.vue` (bandeau, actions d'enregistrement suspendues, retour en ligne), et la page `web/technical/Pwa/app/pages/hors-ligne.vue` d'après « Hors ligne, retour en ligne, mise à jour »
-- [ ] T124 Vérifier chaque écran à 360 px de large (aucun défilement horizontal), le contraste, le focus, les cibles de 44 px et l'agrandissement du texte du téléphone, et corriger dans les couches concernées, en particulier `web/technical/Theme/app/assets/styles/cinq.scss` (SC-008, FR-052)
-- [ ] T125 Lancer `./vendor/bin/sail artisan test` et `./vendor/bin/sail bin pint --test` dans `back/`, puis `pnpm test`, `pnpm lint` et `pnpm exec prettier --check .` dans `web/` ; tout doit être vert
-- [ ] T126 Dérouler les 7 scénarios de [quickstart.md](quickstart.md) de bout en bout et consigner tout écart dans `specs/001-learning-content/quickstart.md`
+- [X] T120 Passer `registerType` à `prompt` et configurer Workbox (`NetworkOnly` pour l'API, page de repli hors ligne) dans `web/technical/Pwa/nuxt.config.ts`
+- [X] T121 [P] Générer les icônes de la maquette (« 5 » souligné de bleu sur jaune) en 192, 512 et maskable 512 dans `web/technical/Pwa/public/icons/`, et les déclarer dans le manifeste
+- [X] T122 [P] Créer `web/technical/Pwa/app/components/InstallPrompt.vue` (`beforeinstallprompt`, instructions iPhone, « Plus tard » mémorisé) et l'entrée « Installer l'application » du menu du compte d'après « Installation »
+- [X] T123 [P] Créer `web/technical/Pwa/app/components/UpdatePrompt.vue` (« Mettre à jour » ou « Plus tard ») et `OfflineBanner.vue` (bandeau, actions d'enregistrement suspendues, retour en ligne), et la page `web/technical/Pwa/app/pages/hors-ligne.vue` d'après « Hors ligne, retour en ligne, mise à jour »
+- [X] T124 Vérifier chaque écran à 360 px de large (aucun défilement horizontal), le contraste, le focus, les cibles de 44 px et l'agrandissement du texte du téléphone, et corriger dans les couches concernées, en particulier `web/technical/Theme/app/assets/styles/cinq.scss` (SC-008, FR-052)
+- [X] T125 Lancer `./vendor/bin/sail artisan test` et `./vendor/bin/sail bin pint --test` dans `back/`, puis `pnpm test`, `pnpm lint` et `pnpm exec prettier --check .` dans `web/` ; tout doit être vert
+- [X] T126 Dérouler les 7 scénarios de [quickstart.md](quickstart.md) de bout en bout et consigner tout écart dans `specs/001-learning-content/quickstart.md`
 
 ---
 
