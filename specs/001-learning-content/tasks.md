@@ -246,13 +246,13 @@ voulant supprimer une catégorie qui contient des sujets.
 
 ### Tests for User Story 4 ⚠️
 
-- [ ] T103 [P] [US4] Écrire `back/functional/catalog/tests/Feature/CategoryManagementTest.php` : écriture réservée à `categories.manage`, nom en double refusé sans tenir compte de la casse ni des accents (`category_name_taken`), suppression d'une catégorie non vide refusée avec le nombre de sujets (`category_not_empty`), réordonnancement (FR-008 à FR-010)
+- [X] T103 [P] [US4] Écrire `back/functional/catalog/tests/Feature/CategoryManagementTest.php` : écriture réservée à `categories.manage`, nom en double refusé sans tenir compte de la casse ni des accents (`category_name_taken`), suppression d'une catégorie non vide refusée avec le nombre de sujets (`category_not_empty`), réordonnancement (FR-008 à FR-010)
 
 ### Implementation for User Story 4
 
-- [ ] T104 [US4] Ajouter à `CategoryResource` et `CategoryControl` l'écriture pour `categories.manage`, le calcul de `name_normalized`, les erreurs `category_name_taken` et `category_not_empty`, et l'action `reorder` dans `back/functional/catalog/src/Rest/Actions/ReorderCategories.php`
-- [ ] T105 [US4] Créer la page `web/functional/Moderation/app/pages/admin/categories.vue` (création, renommage, réordonnancement, suppression avec confirmation ou refus, sous le middleware `permission`) d'après « Catégories »
-- [ ] T106 [P] [US4] Ajouter les textes dans `web/functional/Moderation/i18n/locales/fr.json` et écrire `web/functional/Moderation/tests/CategoriesPage.nuxt.spec.ts`
+- [X] T104 [US4] Ajouter à `CategoryResource` et `CategoryControl` l'écriture pour `categories.manage`, le calcul de `name_normalized`, les erreurs `category_name_taken` et `category_not_empty`, et l'action `reorder` dans `back/functional/catalog/src/Rest/Actions/ReorderCategories.php`
+- [X] T105 [US4] Créer la page `web/functional/Moderation/app/pages/admin/categories.vue` (création, renommage, réordonnancement, suppression avec confirmation ou refus, sous le middleware `permission`) d'après « Catégories »
+- [X] T106 [P] [US4] Ajouter les textes dans `web/functional/Moderation/i18n/locales/fr.json` et écrire `web/functional/Moderation/tests/CategoriesPage.nuxt.spec.ts`
 
 **Checkpoint**: les catégories sont gérées depuis l'interface.
 
