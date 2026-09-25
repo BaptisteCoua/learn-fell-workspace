@@ -11,9 +11,9 @@ et l'en-tête `X-XSRF-TOKEN` à chaque requête qui modifie quelque chose.
 
 | Méthode et chemin | Corps | Réponse | Exigences |
 |---|---|---|---|
-| `POST /register` | `display_name`, `email`, `password`, `password_confirmation`, `timezone` | 201 ; compte inactif, email de confirmation envoyé ; aucune session ouverte | FR-001, FR-002 |
+| `POST /register` | `display_name`, `email`, `password`, `password_confirmation`, `timezone` | 201 ; compte inactif, email de confirmation envoyé ; aucune session ouverte ; 422 `email_taken` (compte actif) ou `email_pending_verification` (compte en attente) | FR-001, FR-002, scénario 6 |
 | `POST /email/verification-notification` | `email` | 202, même réponse que l'adresse existe ou non | FR-002, FR-006 |
-| `GET /email/verify/{id}/{hash}` (lien signé, 24 h) | — | 204 et session ouverte ; 403 `link_expired` si expiré ou déjà utilisé | FR-002 |
+| `GET /email/verify/{id}/{hash}?expires&nonce&signature` (lien signé, 24 h) | — | 204 et session ouverte ; 403 `link_expired` si expiré, déjà utilisé ou remplacé par un lien plus récent | FR-002 |
 | `POST /login` | `email`, `password`, `timezone` | 204 et session de 30 jours ; 422 `invalid_credentials` (message générique) ; 422 `email_not_verified` (seulement si le mot de passe est correct) ; 429 `locked` avec `retry_after` après 5 échecs, verrou de 15 min | FR-003, FR-004, FR-006 |
 | `POST /logout` | — | 204 | FR-003 |
 | `POST /forgot-password` | `email` | 202, même réponse que l'adresse existe ou non ; lien valable 60 min | FR-005, FR-006 |
@@ -131,6 +131,8 @@ Chaque refus métier renvoie `{ "code": "<code>", "message": "<texte français>"
 | Code | HTTP | Exigence |
 |---|---|---|
 | `invalid_credentials` | 422 | FR-006 |
+| `email_taken` | 422 | FR-001, scénario 6 |
+| `email_pending_verification` | 422 | FR-002, scénario 6 |
 | `email_not_verified` | 422 | FR-002 |
 | `locked` | 429 | FR-004 |
 | `link_expired` | 403 / 422 | FR-002, FR-005 |

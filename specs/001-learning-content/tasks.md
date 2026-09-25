@@ -138,29 +138,29 @@ depuis Mailpit, se déconnecter, se reconnecter, réinitialiser le mot de passe.
 
 ### Tests for User Story 2 ⚠️
 
-- [ ] T048 [P] [US2] Écrire `back/functional/users/tests/Feature/RegistrationTest.php` : compte inactif sans session, email de confirmation, mots de passe différents refusés, 8 caractères minimum, email déjà pris (actif et inactif) (FR-001, FR-002, scénarios 1, 2 et 6)
-- [ ] T049 [P] [US2] Écrire `back/functional/users/tests/Feature/EmailVerificationTest.php` : lien valable 24 h et à usage unique, lien expiré (`link_expired`), renvoi qui invalide le précédent, connexion ouverte après confirmation (scénarios 3 et 5)
-- [ ] T050 [P] [US2] Écrire `back/functional/users/tests/Feature/LoginTest.php` : message générique `invalid_credentials`, `email_not_verified` seulement après un mot de passe correct, verrou `locked` de 15 min après 5 échecs sur un même compte, session de 30 jours, déconnexion (FR-003, FR-004, FR-006, scénarios 4, 7, 8 et 10)
-- [ ] T051 [P] [US2] Écrire `back/functional/users/tests/Feature/PasswordResetTest.php` : même réponse que l'email existe ou non, lien de 60 min à usage unique, confirmation du nouveau mot de passe, fermeture des autres sessions (FR-005, FR-006, scénario 9)
-- [ ] T052 [P] [US2] Écrire `back/functional/users/tests/Feature/PruneUnverifiedUsersTest.php` : un compte non confirmé de plus de 7 jours est supprimé, pas un compte confirmé ni un compte récent
+- [X] T048 [P] [US2] Écrire `back/functional/users/tests/Feature/RegistrationTest.php` : compte inactif sans session, email de confirmation, mots de passe différents refusés, 8 caractères minimum, email déjà pris (actif et inactif) (FR-001, FR-002, scénarios 1, 2 et 6)
+- [X] T049 [P] [US2] Écrire `back/functional/users/tests/Feature/EmailVerificationTest.php` : lien valable 24 h et à usage unique, lien expiré (`link_expired`), renvoi qui invalide le précédent, connexion ouverte après confirmation (scénarios 3 et 5)
+- [X] T050 [P] [US2] Écrire `back/functional/users/tests/Feature/LoginTest.php` : message générique `invalid_credentials`, `email_not_verified` seulement après un mot de passe correct, verrou `locked` de 15 min après 5 échecs sur un même compte, session de 30 jours, déconnexion (FR-003, FR-004, FR-006, scénarios 4, 7, 8 et 10)
+- [X] T051 [P] [US2] Écrire `back/functional/users/tests/Feature/PasswordResetTest.php` : même réponse que l'email existe ou non, lien de 60 min à usage unique, confirmation du nouveau mot de passe, fermeture des autres sessions (FR-005, FR-006, scénario 9)
+- [X] T052 [P] [US2] Écrire `back/functional/users/tests/Feature/PruneUnverifiedUsersTest.php` : un compte non confirmé de plus de 7 jours est supprimé, pas un compte confirmé ni un compte récent
 
 ### Implementation for User Story 2
 
-- [ ] T053 [US2] Créer l'action Fortify `back/functional/users/src/Actions/CreateNewUser.php` (`display_name` 2 à 60 caractères, email unique, mot de passe de 8 caractères minimum et `confirmed`, `timezone` IANA) et une réponse d'inscription 201 sans ouverture de session
-- [ ] T054 [US2] Personnaliser l'authentification dans `back/functional/users/src/Providers/FortifyServiceProvider.php` : `authenticateUsing` qui lève `email_not_verified` pour un compte inactif au mot de passe correct, limiteur `login` à 5 tentatives par email sur 15 minutes (réponse `locked` avec `retry_after`), mise à jour du fuseau horaire à la connexion, « se souvenir » par défaut pendant 30 jours
-- [ ] T055 [US2] Régler la vérification d'email dans `back/functional/users/config/auth.php` (`verification.expire: 1440`, `passwords.users.expire: 60`) et faire ouvrir la session par la route de vérification, avec `link_expired` si le lien est expiré ou déjà utilisé
-- [ ] T056 [US2] Créer les notifications françaises `back/functional/users/src/Notifications/VerifyEmailNotification.php` et `ResetPasswordNotification.php`, signées CINQ, dont les liens pointent vers les pages du web (`FRONTEND_URL`), avec leurs textes dans `back/functional/users/lang/fr/`
-- [ ] T057 [US2] Créer l'action Fortify `back/functional/users/src/Actions/ResetUserPassword.php`, qui confirme le nouveau mot de passe et supprime les autres sessions de l'utilisateur dans `sessions`
-- [ ] T058 [US2] Créer `GET /user` (`id`, `display_name`, `email`, `permissions[]`) dans `back/functional/users/src/Http/Controllers/CurrentUserController.php`, routé dans `back/functional/users/routes/api.php` sous `auth:sanctum`
-- [ ] T059 [US2] Créer `web/functional/Account/app/composables/useAuth.ts` (inscription, connexion, déconnexion, renvoi du lien, mot de passe oublié, réinitialisation, par le `fetch` de `laravelRaom` ; fuseau pris dans `Intl`)
-- [ ] T060 [P] [US2] Créer `web/functional/Account/app/components/GoogleSoonButton.vue` (« Continuer avec Google », désactivé, étiquette « Bientôt »)
-- [ ] T061 [US2] Créer la connexion `web/functional/Account/app/pages/connexion.vue` (états erreur, compte bloqué, compte non confirmé avec renvoi du lien, lien renvoyé) d'après « Connexion »
-- [ ] T062 [US2] Créer l'inscription `web/functional/Account/app/pages/inscription/index.vue` (mots de passe différents, email pris, email en attente) d'après « Inscription — étape 1 »
-- [ ] T063 [US2] Créer la confirmation `web/functional/Account/app/pages/inscription/confirmation.vue` (envoyé, renvoyé, confirmé, expiré ; traite le lien de vérification) d'après « Confirmation de l'email — étape 2 »
-- [ ] T064 [US2] Créer `web/functional/Account/app/pages/mot-de-passe-oublie.vue` et `web/functional/Account/app/pages/reinitialiser-mot-de-passe.vue` d'après « Mot de passe oublié » et « Nouveau mot de passe »
-- [ ] T065 [US2] Créer le menu du compte `web/functional/Account/app/components/AccountMenu.vue` (ordinateur) et la page `web/functional/Account/app/pages/compte.vue` (mobile), avec la section administration selon les permissions et la déconnexion, d'après « Menu du compte et déconnexion »
-- [ ] T066 [P] [US2] Ajouter les textes dans `web/functional/Account/i18n/locales/fr.json`
-- [ ] T067 [P] [US2] Écrire `web/functional/Account/tests/LoginPage.nuxt.spec.ts`, `RegisterPage.nuxt.spec.ts` et `ConfirmationPage.nuxt.spec.ts`
+- [X] T053 [US2] Créer l'action Fortify `back/functional/users/src/Actions/CreateNewUser.php` (`display_name` 2 à 60 caractères, email unique, mot de passe de 8 caractères minimum et `confirmed`, `timezone` IANA) et une réponse d'inscription 201 sans ouverture de session
+- [X] T054 [US2] Personnaliser l'authentification dans `back/functional/users/src/Providers/FortifyServiceProvider.php` : `authenticateUsing` qui lève `email_not_verified` pour un compte inactif au mot de passe correct, limiteur `login` à 5 tentatives par email sur 15 minutes (réponse `locked` avec `retry_after`), mise à jour du fuseau horaire à la connexion, « se souvenir » par défaut pendant 30 jours
+- [X] T055 [US2] Régler la vérification d'email dans `back/functional/users/config/auth.php` (`verification.expire: 1440`, `passwords.users.expire: 60`) et faire ouvrir la session par la route de vérification, avec `link_expired` si le lien est expiré ou déjà utilisé
+- [X] T056 [US2] Créer les notifications françaises `back/functional/users/src/Notifications/VerifyEmailNotification.php` et `ResetPasswordNotification.php`, signées CINQ, dont les liens pointent vers les pages du web (`FRONTEND_URL`), avec leurs textes dans `back/functional/users/lang/fr/`
+- [X] T057 [US2] Créer l'action Fortify `back/functional/users/src/Actions/ResetUserPassword.php`, qui confirme le nouveau mot de passe et supprime les autres sessions de l'utilisateur dans `sessions`
+- [X] T058 [US2] Créer `GET /user` (`id`, `display_name`, `email`, `permissions[]`) dans `back/functional/users/src/Http/Controllers/CurrentUserController.php`, routé dans `back/functional/users/routes/api.php` sous `auth:sanctum`
+- [X] T059 [US2] Créer `web/functional/Account/app/composables/useAuth.ts` (inscription, connexion, déconnexion, renvoi du lien, mot de passe oublié, réinitialisation, par le `fetch` de `laravelRaom` ; fuseau pris dans `Intl`)
+- [X] T060 [P] [US2] Créer `web/functional/Account/app/components/GoogleSoonButton.vue` (« Continuer avec Google », désactivé, étiquette « Bientôt »)
+- [X] T061 [US2] Créer la connexion `web/functional/Account/app/pages/connexion.vue` (états erreur, compte bloqué, compte non confirmé avec renvoi du lien, lien renvoyé) d'après « Connexion »
+- [X] T062 [US2] Créer l'inscription `web/functional/Account/app/pages/inscription/index.vue` (mots de passe différents, email pris, email en attente) d'après « Inscription — étape 1 »
+- [X] T063 [US2] Créer la confirmation `web/functional/Account/app/pages/inscription/confirmation.vue` (envoyé, renvoyé, confirmé, expiré ; traite le lien de vérification) d'après « Confirmation de l'email — étape 2 »
+- [X] T064 [US2] Créer `web/functional/Account/app/pages/mot-de-passe-oublie.vue` et `web/functional/Account/app/pages/reinitialiser-mot-de-passe.vue` d'après « Mot de passe oublié » et « Nouveau mot de passe »
+- [X] T065 [US2] Créer le menu du compte `web/functional/Account/app/components/AccountMenu.vue` (ordinateur) et la page `web/functional/Account/app/pages/compte.vue` (mobile), avec la section administration selon les permissions et la déconnexion, d'après « Menu du compte et déconnexion »
+- [X] T066 [P] [US2] Ajouter les textes dans `web/functional/Account/i18n/locales/fr.json`
+- [X] T067 [P] [US2] Écrire `web/functional/Account/tests/LoginPage.nuxt.spec.ts`, `RegisterPage.nuxt.spec.ts` et `ConfirmationPage.nuxt.spec.ts`
 
 **Checkpoint**: les comptes fonctionnent seuls ; les stories suivantes peuvent s'appuyer sur la connexion.
 
