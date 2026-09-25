@@ -111,7 +111,7 @@ par `learnings`. Ainsi, aucune couche n'ajoute d'action sur la ressource d'une a
   `due_today_count`, `box_1_count` à `box_5_count`, `next_review_on` (le plus proche).
 - **Lecture** : l'utilisateur connecté, ses apprentissages uniquement (FR-043).
 - **Création** (`mutate`, `subject_id`) : apprendre un sujet publié ; une progression en boîte 1,
-  due aujourd'hui, par question (FR-041) ; 409 `already_learning`.
+  due aujourd'hui, par question (FR-041) ; 409 `already_learning`, 422 `subject_not_published`.
 - **Suppression** : arrêter d'apprendre ; supprime les progressions et les réponses (FR-050).
 
 ### card-progress
@@ -121,9 +121,10 @@ par `learnings`. Ainsi, aucune couche n'ajoute d'action sur la ressource d'une a
 - **Instruction `due`** : champ `subject_ids[]` ; ne garde que les cartes dues aujourd'hui dans le
   fuseau de l'utilisateur, de sujets publiés, triées de la plus en retard à la plus récente
   (FR-044).
-- **Action `answer`** : champs `card_progress_id`, `known` (booléen). Applique la règle Leitner
-  (FR-046), enregistre la réponse (FR-048) et renvoie `from_box`, `to_box`, `next_review_on`
-  (FR-047). 409 `card_not_due` si la carte n'est pas due, ce qui couvre le double clic.
+- **Action `answer`** (autonome) : champs `card_progress_id`, `known` (booléen). Applique la règle
+  Leitner (FR-046) et enregistre la réponse (FR-048). Comme toute action lomkit, elle renvoie le
+  nombre d'éléments touchés : le web relit la carte (`box`, `next_review_on`) pour afficher
+  `from_box`, `to_box` et la prochaine date (FR-047). 409 `card_not_due` si la carte n'est pas due, ce qui couvre le double clic.
 - **Bilan de séance** : le web l'établit à partir des réponses de la séance et d'une recherche
   `learnings` sur les sujets sélectionnés (FR-049).
 
@@ -148,5 +149,6 @@ Chaque refus métier renvoie `{ "code": "<code>", "message": "<texte français>"
 | `last_question_of_published_subject` | 422 | FR-018 |
 | `reason_required` | 422 | FR-031 |
 | `report_already_pending` | 409 | FR-028 |
+| `subject_not_published` | 422 | FR-041 |
 | `already_learning` | 409 | FR-041 |
 | `card_not_due` | 409 | FR-046 |
