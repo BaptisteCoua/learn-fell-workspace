@@ -268,22 +268,22 @@ motif côté auteur, l'impossibilité de le republier et l'entrée dans l'histor
 
 ### Tests for User Story 5 ⚠️
 
-- [ ] T107 [P] [US5] Écrire `back/functional/moderation/tests/Feature/ReportTest.php` : signalement d'un sujet publié par un inscrit confirmé qui n'en est pas l'auteur, motifs de la liste fermée, commentaire de 500 caractères au plus, second signalement en attente refusé (`report_already_pending`), sujet toujours visible (FR-027 à FR-029)
-- [ ] T108 [P] [US5] Écrire `back/functional/moderation/tests/Feature/ModerationDecisionTest.php` : file réservée à `reports.review`, regroupée par sujet et triée du plus ancien au plus récent ; ignorer clôt les signalements ; retirer exige un motif (`reason_required`), passe le sujet en `retired` et clôt ses signalements ; rétablir le repasse en `draft` ; historique complet et en lecture seule (FR-030 à FR-034)
+- [X] T107 [P] [US5] Écrire `back/functional/moderation/tests/Feature/ReportTest.php` : signalement d'un sujet publié par un inscrit confirmé qui n'en est pas l'auteur, motifs de la liste fermée, commentaire de 500 caractères au plus, second signalement en attente refusé (`report_already_pending`), sujet toujours visible (FR-027 à FR-029)
+- [X] T108 [P] [US5] Écrire `back/functional/moderation/tests/Feature/ModerationDecisionTest.php` : file réservée à `reports.review`, regroupée par sujet et triée du plus ancien au plus récent ; ignorer clôt les signalements ; retirer exige un motif (`reason_required`), passe le sujet en `retired` et clôt ses signalements ; rétablir le repasse en `draft` ; historique complet et en lecture seule (FR-030 à FR-034)
 
 ### Implementation for User Story 5
 
-- [ ] T109 [US5] Créer les migrations `reports` (`reason` varchar(24) `inappropriate`/`incorrect`/`spam`/`copyright`/`other`, `comment` varchar(500) null, `status` `pending`/`closed`, index unique partiel `subject_id`, `reporter_id` `WHERE status = 'pending'`) et `moderation_decisions` (`decision` `ignored`/`retired`/`restored`, `subject_title` varchar(120), `reason` obligatoire pour `retired`) dans `back/functional/moderation/database/migrations/`
-- [ ] T110 [US5] Créer les enums `ReportReason`, `ReportStatus`, `DecisionType` dans `back/functional/moderation/src/Enums/`, les modèles `Report` et `ModerationDecision` dans `back/functional/moderation/src/Models/` et leurs factories
-- [ ] T111 [US5] Créer `ReportControl` et `ReportResource` (création par un inscrit, lecture pour `reports.review`, `report_already_pending`) dans `back/functional/moderation/src/`, routés dans `back/functional/moderation/routes/api.php`
-- [ ] T112 [US5] Créer `ModerationDecisionResource` (création pour `subjects.moderate` : `ignored` clôt les signalements, `retired` exige un motif, retire le sujet et clôt ses signalements, `restored` repasse le sujet en brouillon ; lecture pour `moderation.history.view`) et l'application de la décision dans `back/functional/moderation/src/Actions/ApplyModerationDecision.php`
-- [ ] T113 [US5] Clore les signalements en attente d'un sujet supprimé par le listener `back/functional/moderation/src/Listeners/CloseReportsOfDeletedSubject.php` (écoute `SubjectDeleting`)
-- [ ] T114 [P] [US5] Créer les modèles raom `Report` et `ModerationDecision` dans `web/functional/Moderation/app/models/`
-- [ ] T115 [US5] Créer `web/functional/Moderation/app/components/ReportSubjectDialog.vue` (5 motifs, commentaire, confirmation, « déjà signalé ») et l'intégrer à la page d'un sujet `web/functional/Catalog/app/pages/sujets/[id]/index.vue`, feuille du bas sur mobile
-- [ ] T116 [US5] Créer la file `web/functional/Moderation/app/pages/admin/moderation.vue` (signalements regroupés, commentaires, ignorer, retirer avec motif obligatoire, file vide) d'après « File de modération »
-- [ ] T117 [US5] Créer l'historique `web/functional/Moderation/app/pages/admin/historique.vue` (filtres par décision, sujets retirés, rétablir avec confirmation) d'après « Historique et rétablissement »
-- [ ] T118 [US5] Ajouter la vue admin à la page d'un sujet et à l'éditeur (« Retirer le sujet » avec motif, « Rétablir », bandeau administrateur) dans `web/functional/Catalog/app/pages/sujets/[id]/index.vue` et `web/functional/Authoring/app/pages/sujets/[id]/modifier.vue`
-- [ ] T119 [P] [US5] Écrire `web/functional/Moderation/tests/ModerationQueue.nuxt.spec.ts` et `ReportSubjectDialog.nuxt.spec.ts`
+- [X] T109 [US5] Créer les migrations `reports` (`reason` varchar(24) `inappropriate`/`incorrect`/`spam`/`copyright`/`other`, `comment` varchar(500) null, `status` `pending`/`closed`, index unique partiel `subject_id`, `reporter_id` `WHERE status = 'pending'`) et `moderation_decisions` (`decision` `ignored`/`retired`/`restored`, `subject_title` varchar(120), `reason` obligatoire pour `retired`) dans `back/functional/moderation/database/migrations/`
+- [X] T110 [US5] Créer les enums `ReportReason`, `ReportStatus`, `DecisionType` dans `back/functional/moderation/src/Enums/`, les modèles `Report` et `ModerationDecision` dans `back/functional/moderation/src/Models/` et leurs factories
+- [X] T111 [US5] Créer `ReportControl` et `ReportResource` (création par un inscrit, lecture pour `reports.review`, `report_already_pending`) dans `back/functional/moderation/src/`, routés dans `back/functional/moderation/routes/api.php`
+- [X] T112 [US5] Créer `ModerationDecisionResource` (création pour `subjects.moderate` : `ignored` clôt les signalements, `retired` exige un motif, retire le sujet et clôt ses signalements, `restored` repasse le sujet en brouillon ; lecture pour `moderation.history.view`) et l'application de la décision dans `back/functional/moderation/src/Actions/ApplyModerationDecision.php`
+- [X] T113 [US5] Clore les signalements en attente d'un sujet supprimé par le listener `back/functional/moderation/src/Listeners/CloseReportsOfDeletedSubject.php` (écoute `SubjectDeleting`)
+- [X] T114 [P] [US5] Créer les modèles raom `Report` et `ModerationDecision` dans `web/functional/Moderation/app/models/`
+- [X] T115 [US5] Créer `web/functional/Moderation/app/components/ReportSubjectDialog.vue` (5 motifs, commentaire, confirmation, « déjà signalé ») et l'intégrer à la page d'un sujet `web/functional/Catalog/app/pages/sujets/[id]/index.vue`, feuille du bas sur mobile
+- [X] T116 [US5] Créer la file `web/functional/Moderation/app/pages/admin/moderation.vue` (signalements regroupés, commentaires, ignorer, retirer avec motif obligatoire, file vide) d'après « File de modération »
+- [X] T117 [US5] Créer l'historique `web/functional/Moderation/app/pages/admin/historique.vue` (filtres par décision, sujets retirés, rétablir avec confirmation) d'après « Historique et rétablissement »
+- [X] T118 [US5] Ajouter la vue admin à la page d'un sujet et à l'éditeur (« Retirer le sujet » avec motif, « Rétablir », bandeau administrateur) dans `web/functional/Catalog/app/pages/sujets/[id]/index.vue` et `web/functional/Authoring/app/pages/sujets/[id]/modifier.vue`
+- [X] T119 [P] [US5] Écrire `web/functional/Moderation/tests/ModerationQueue.nuxt.spec.ts` et `ReportSubjectDialog.nuxt.spec.ts`
 
 **Checkpoint**: toutes les stories fonctionnent.
 
