@@ -41,7 +41,7 @@ déclaré dans `webpush.model`.
 |---|---|---|
 | id | bigint PK | |
 | subscribable_type, subscribable_id | morph | le `ReminderSetting` du compte |
-| endpoint | varchar(500) | unique ; URL du service push de l'appareil |
+| endpoint | varchar(1024) | unique ; URL du service push de l'appareil (`ENDPOINT_MAX_LENGTH` du paquet : certains services, comme Microsoft WNS, dépassent 500 caractères) |
 | public_key | varchar null | clé `p256dh` |
 | auth_token | varchar null | clé `auth` |
 | content_encoding | varchar null | `aes128gcm` par défaut |

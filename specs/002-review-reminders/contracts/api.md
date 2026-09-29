@@ -35,7 +35,7 @@ Routes lomkit standard (`search`, `mutate`, `DELETE`, `details`, `actions/<actio
   `public_key` et `auth_token` ne sont jamais renvoyés.
 - **Lecture** : les appareils du compte connecté, les plus récents d'abord (FR-006).
 - **Action `register-device`** (standalone) : enregistre l'appareil courant.
-  - Champs : `endpoint` (URL `https`, 500 caractères au plus), `public_key`, `auth_token`,
+  - Champs : `endpoint` (URL `https`, 1024 caractères au plus), `public_key`, `auth_token`,
     `content_encoding` (`aes128gcm` ou `aesgcm`), `device_label` (60 caractères au plus).
   - Un endpoint déjà connu est rattaché au compte connecté (research R11).
   - Effets : `activated_at` est rempli au premier canal actif, `proposal_seen_at` s'il était nul,
