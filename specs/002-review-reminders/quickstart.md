@@ -31,8 +31,9 @@ pnpm dev                                         # écrans, sur http://localhost
 pnpm build && PORT=3000 node .output/server/index.mjs
 ```
 
-Pour ne pas attendre l'heure réelle, la commande accepte une horloge :
-`./vendor/bin/sail artisan reminders:dispatch --now="2026-09-26 19:00"`.
+Pour ne pas attendre l'heure réelle, la commande accepte une horloge, en UTC, et envoie alors
+les rappels tout de suite, sans passer par la file :
+`./vendor/bin/sail artisan reminders:dispatch --now="2026-09-26 17:00"` (19 h à Paris en été).
 
 ## Tests automatisés
 

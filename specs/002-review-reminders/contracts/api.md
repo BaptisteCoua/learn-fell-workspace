@@ -89,8 +89,8 @@ Données chiffrées envoyées au service push de chaque appareil, lues par
 {
   "title": "CINQ",
   "body": "12 cartes à réviser aujourd'hui",
-  "icon": "/pwa-192x192.png",
-  "badge": "/pwa-64x64.png",
+  "icon": "/icons/icon-192.png",
+  "badge": "/favicon-48.png",
   "tag": "review-reminder",
   "data": { "url": "https://app.<domaine>/revisions/seance?sujets=1,2" }
 }
