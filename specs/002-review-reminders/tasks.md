@@ -225,10 +225,10 @@ continuent.
 **Purpose**: données de démonstration, documentation des repos, qualité et validation de bout en
 bout.
 
-- [ ] T077 [P] Créer `RemindersSeeder` (quelques comptes avec l'email activé, un appareil factice, un journal sur plusieurs jours) dans `back/functional/reminders/database/seeders/RemindersSeeder.php`, lancé par `./vendor/bin/sail artisan osdd:seed`
-- [ ] T078 [P] Mettre à jour `back/CLAUDE.md` : couche `reminders` dans la liste, `schedule:work` et `webpush:vapid` dans « Run »
-- [ ] T079 [P] Mettre à jour `web/CLAUDE.md` : la notification push ne se teste qu'en build de production (`pnpm build`), et `NUXT_PUBLIC_VAPID_PUBLIC_KEY` doit reprendre la clé publique du back
-- [ ] T080 Lancer `./vendor/bin/sail artisan test` et `./vendor/bin/sail bin pint --dirty --format agent` dans `back/`, puis `pnpm test`, `pnpm lint` et `pnpm exec prettier --check .` dans `web/`
+- [X] T077 [P] Créer `RemindersSeeder` (quelques comptes avec l'email activé, un journal sur plusieurs jours) dans `back/functional/reminders/database/seeders/RemindersSeeder.php`, lancé par `./vendor/bin/sail artisan osdd:seed`. Pas d'appareil factice : un faux abonnement ferait partir chaque envoi de développement vers un service push inexistant, et seul un navigateur peut créer un vrai abonnement
+- [X] T078 [P] Mettre à jour `back/CLAUDE.md` : couche `reminders` dans la liste, `schedule:work` et `webpush:vapid` dans « Run »
+- [X] T079 [P] Mettre à jour `web/CLAUDE.md` : la notification push ne se teste qu'en build de production (`pnpm build`), et `NUXT_PUBLIC_VAPID_PUBLIC_KEY` doit reprendre la clé publique du back
+- [X] T080 Lancer `./vendor/bin/sail artisan test` et `./vendor/bin/sail bin pint --dirty --format agent` dans `back/`, puis `pnpm test`, `pnpm lint` et `pnpm exec prettier --check .` dans `web/`
 - [ ] T081 Vérifier de 360 à 1440 px, sans défilement horizontal ni libellé tronqué et sans violation axe (script `a11y.cjs` de la 001), `web/functional/Reminders/app/components/ReminderProposalDialog.vue`, `web/functional/Reminders/app/components/AccountReminders.vue` et `web/functional/Reminders/app/pages/rappels/desinscription.vue`
 - [ ] T082 Dérouler les scénarios manuels 1 à 10 de `specs/002-review-reminders/quickstart.md` et consigner les résultats à la fin de `specs/002-review-reminders/tasks.md`
 
@@ -326,3 +326,38 @@ rien ou n'est jamais activée.
   FR-018 (T067, T069), FR-019 (T047, T049), FR-020 (T049).
 - Commit après chaque tâche ou groupe logique, dans le repo concerné (`git -C back`, `git -C web`),
   message à l'impératif en anglais, sans mention d'IA.
+
+---
+
+## Résultats de validation (T080 à T082)
+
+Relevés le 2026-09-29, sur les branches `002-review-reminders`.
+
+### Tests automatisés (T080)
+
+- `back/` : 259 tests, 761 assertions, tous verts ; `pint --test` propre sur tout le projet.
+  `NextReminderSlot`, `ReminderSpacing` et `ReminderEligibility` sont couverts à 100 % (pcov).
+- `web/` : 114 tests verts ; ESLint et Prettier propres ; `pnpm build` réussit et le `sw.js`
+  généré importe `sw-push.js`.
+
+### Scénarios du quickstart (T082)
+
+Déroulés sur la pile de développement (Sail, SMTP vers Mailpit, API sur le port 8090) :
+
+| Scénario | Résultat |
+|---|---|
+| 1. Proposition | Validé par le développeur dans le navigateur ; tests `ReminderProposal` |
+| 2. Section « Rappels » | Validé par le développeur ; entrée « Rappels de révision » ajoutée au menu du compte, qui n'avait aucun lien vers `/compte` sur ordinateur |
+| 4. Rappel du jour | ✅ `reminders:dispatch --now` : un email « 23 cartes à réviser aujourd’hui » dans Mailpit, lien `/revisions/seance?sujets=1` ; la même minute relancée n'envoie rien |
+| 8. Désinscription | ✅ en-têtes `List-Unsubscribe` et `List-Unsubscribe-Post` présents ; `POST` sans session → 204, deux fois ; signature altérée → 403 `invalid_link` ; le compte passe à `email_enabled = false`, `unsubscribed`, sans prochain rappel |
+| 3, 5, 6, 7, 9 | Couverts par les tests automatisés ; déroulé dans le navigateur à faire |
+| 10. Mise en page | Voir T081 |
+
+### Écarts relevés pendant la validation
+
+- Le dialogue proposait les notifications là où elles ne pouvaient pas marcher (sans service
+  worker, iPhone hors PWA), et un échec de l'appareil bloquait aussi l'email : corrigé.
+- La tâche d'envoi construisait le canal push même sans appareil : une configuration VAPID
+  invalide empêchait l'email. Corrigé, avec un test.
+- Le script `a11y.cjs` cité par le quickstart n'existe dans aucun repo : la vérification de
+  mise en page se fait à la main dans le navigateur.
