@@ -28,7 +28,7 @@ echo "NUXT_PUBLIC_VAPID_PUBLIC_KEY=$(grep VAPID_PUBLIC_KEY ../back/.env | cut -d
 pnpm dev                                         # écrans, sur http://localhost:3000
 
 # push : le service worker n'existe qu'en build de production
-pnpm build && PORT=3000 node .output/server/index.mjs
+pnpm build && PORT=3000 node --env-file=.env .output/server/index.mjs   # le serveur construit ne lit pas .env seul
 ```
 
 Pour ne pas attendre l'heure réelle, la commande accepte une horloge, en UTC, et envoie alors

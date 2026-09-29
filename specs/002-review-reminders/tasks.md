@@ -229,7 +229,7 @@ bout.
 - [X] T078 [P] Mettre à jour `back/CLAUDE.md` : couche `reminders` dans la liste, `schedule:work` et `webpush:vapid` dans « Run »
 - [X] T079 [P] Mettre à jour `web/CLAUDE.md` : la notification push ne se teste qu'en build de production (`pnpm build`), et `NUXT_PUBLIC_VAPID_PUBLIC_KEY` doit reprendre la clé publique du back
 - [X] T080 Lancer `./vendor/bin/sail artisan test` et `./vendor/bin/sail bin pint --dirty --format agent` dans `back/`, puis `pnpm test`, `pnpm lint` et `pnpm exec prettier --check .` dans `web/`
-- [ ] T081 Vérifier de 360 à 1440 px, sans défilement horizontal ni libellé tronqué et sans violation axe (script `a11y.cjs` de la 001), `web/functional/Reminders/app/components/ReminderProposalDialog.vue`, `web/functional/Reminders/app/components/AccountReminders.vue` et `web/functional/Reminders/app/pages/rappels/desinscription.vue`
+- [X] T081 Vérifier de 360 à 1440 px, sans défilement horizontal ni libellé tronqué et sans violation axe (script `a11y.cjs` de la 001), `web/functional/Reminders/app/components/ReminderProposalDialog.vue`, `web/functional/Reminders/app/components/AccountReminders.vue` et `web/functional/Reminders/app/pages/rappels/desinscription.vue`
 - [ ] T082 Dérouler les scénarios manuels 1 à 10 de `specs/002-review-reminders/quickstart.md` et consigner les résultats à la fin de `specs/002-review-reminders/tasks.md`
 
 ---
@@ -346,12 +346,21 @@ Déroulés sur la pile de développement (Sail, SMTP vers Mailpit, API sur le po
 
 | Scénario | Résultat |
 |---|---|
-| 1. Proposition | Validé par le développeur dans le navigateur ; tests `ReminderProposal` |
-| 2. Section « Rappels » | Validé par le développeur ; entrée « Rappels de révision » ajoutée au menu du compte, qui n'avait aucun lien vers `/compte` sur ordinateur |
+| 1. Proposition | ✅ dans le navigateur : ouverte après le premier « Apprendre ce sujet », email seul sous `pnpm dev` (pas de service worker), 19:00 ; « Activer » enregistre et confirme |
+| 2. Section « Rappels » | ✅ email coché, heure passée à 08:00 → prochain rappel en base le lendemain 06:00 UTC ; entrée « Rappels de révision » ajoutée au menu du compte, qui n'avait aucun lien vers `/compte` sur ordinateur |
 | 4. Rappel du jour | ✅ `reminders:dispatch --now` : un email « 23 cartes à réviser aujourd’hui » dans Mailpit, lien `/revisions/seance?sujets=1` ; la même minute relancée n'envoie rien |
-| 8. Désinscription | ✅ en-têtes `List-Unsubscribe` et `List-Unsubscribe-Post` présents ; `POST` sans session → 204, deux fois ; signature altérée → 403 `invalid_link` ; le compte passe à `email_enabled = false`, `unsubscribed`, sans prochain rappel |
-| 3, 5, 6, 7, 9 | Couverts par les tests automatisés ; déroulé dans le navigateur à faire |
-| 10. Mise en page | Voir T081 |
+| 8. Désinscription | ✅ en-têtes `List-Unsubscribe` et `List-Unsubscribe-Post` présents ; `POST` sans session → 204, deux fois ; signature altérée → 403 `invalid_link` ; le compte passe à `email_enabled = false`, `unsubscribed`, sans prochain rappel. Page web sans session : le lien de l'email confirme, un lien altéré affiche « Ce lien n’est pas valide. » |
+| 3, 5, 7 | Couverts par les tests automatisés (iOS hors PWA, rien à réviser, espacement) |
+| 6, 9 | ⏳ push dans un vrai navigateur, sur le build de production : à dérouler par le développeur |
+| 10. Mise en page | ✅ voir T081 |
+
+### Mise en page (T081)
+
+Mesurée dans le navigateur intégré à 360, 768 et 1440 px : défilement horizontal de la page,
+libellés tronqués et cibles de moins de 44 px. Aucun écart sur la proposition (360 px), la
+section « Rappels » (360, 768, 1440 px) et `/rappels/desinscription` (360 et 1440 px, états
+confirmé et lien invalide). Le script `a11y.cjs` (axe) de la 001 n'étant dans aucun repo, axe n'a
+pas été passé.
 
 ### Écarts relevés pendant la validation
 
