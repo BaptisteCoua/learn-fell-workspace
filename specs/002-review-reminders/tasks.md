@@ -176,13 +176,13 @@ rappel le lendemain.
 
 ### Tests for User Story 3 ⚠️
 
-- [ ] T060 [P] [US3] Écrire le test unitaire `back/functional/reminders/tests/Unit/ReminderSpacingTest.php` : chaque jour d'inactivité du 1er au 60e (fournisseur de données), avec l'écart minimal « 0 à 7 → 1 jour, 8 à 21 → 2 jours, 22 et plus → 7 jours » ; aucun rappel encore envoyé → autorisé ; reprise quotidienne après une réponse (SC-005)
-- [ ] T061 [P] [US3] Écrire `back/functional/reminders/tests/Feature/ReminderSpacingEligibilityTest.php` : dernière réponse il y a 3 jours → rappel ; 10 jours et rappel la veille → rien ; 30 jours et dernier rappel il y a moins de 7 jours → rien ; jamais de réponse → compté depuis `activated_at` ; une réponse → rappel le lendemain (FR-012, FR-013)
+- [X] T060 [P] [US3] Écrire le test unitaire `back/functional/reminders/tests/Unit/ReminderSpacingTest.php` : chaque jour d'inactivité du 1er au 60e (fournisseur de données), avec l'écart minimal « 0 à 7 → 1 jour, 8 à 21 → 2 jours, 22 et plus → 7 jours » ; aucun rappel encore envoyé → autorisé ; reprise quotidienne après une réponse (SC-005)
+- [X] T061 [P] [US3] Écrire `back/functional/reminders/tests/Feature/ReminderSpacingEligibilityTest.php` : dernière réponse il y a 3 jours → rappel ; 10 jours et rappel la veille → rien ; 30 jours et dernier rappel il y a moins de 7 jours → rien ; jamais de réponse → compté depuis `activated_at` ; une réponse → rappel le lendemain (FR-012, FR-013)
 
 ### Implementation for User Story 3
 
-- [ ] T062 [US3] Créer la classe pure `ReminderSpacing` dans `back/functional/reminders/src/Domain/ReminderSpacing.php`, avec les paliers en constantes (research R6)
-- [ ] T063 [US3] Ajouter la condition 5 dans `back/functional/reminders/src/Domain/ReminderEligibility.php` : date locale de la dernière `review_answers.answered_at` du compte, ou de `activated_at`, et dernière `local_date` de `reminder_sends`
+- [X] T062 [US3] Créer la classe pure `ReminderSpacing` dans `back/functional/reminders/src/Domain/ReminderSpacing.php`, avec les paliers en constantes (research R6)
+- [X] T063 [US3] Ajouter la condition 5 dans `back/functional/reminders/src/Domain/ReminderEligibility.php` : date locale de la dernière `review_answers.answered_at` du compte, ou de `activated_at`, et dernière `local_date` de `reminder_sends`
 
 **Checkpoint**: les rappels s'espacent et reprennent après une réponse.
 
