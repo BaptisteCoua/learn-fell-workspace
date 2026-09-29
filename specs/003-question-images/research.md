@@ -127,7 +127,14 @@ contexte technique du plan sont toutes tranchées ici.
 - **Écarté** :
   - enregistrer chaque image par sa propre ressource après la question : plusieurs requêtes,
     donc des états intermédiaires visibles, et aucune atomicité ;
-  - `detach` pour retirer : il laisserait une image orpheline au lieu de la supprimer.
+  - `detach` au sens lomkit (clé étrangère remise à nul) : il laisserait une image orpheline.
+- **Amendement du 2026-09-29, pendant l'implémentation** : raom 0.3.7 n'envoie pas une liste de
+  relation vide (`buildRelationPayload` renvoie `undefined` quand aucune opération n'est en
+  file). Le retrait de la dernière image d'un recto qui a du texte serait donc perdu.
+  - Le web envoie donc aussi un `detach` pour chaque image retirée, et le back traite un
+    `detach` sur `images` comme une suppression définitive dans la même transaction.
+  - `authorizeToDetach` n'accepte que les images de cette question.
+  - La règle « absente d'une liste non vide = supprimée » reste en place.
 
 ## R7. Recto sans texte
 

@@ -87,8 +87,16 @@ venues des traductions françaises du back, erreurs de validation `422` au forma
     erreur métier `422` `recto_empty` : « Ajoutez un texte ou une image au recto. ».
 - **Autorisation** : une image qui n'est ni en attente et envoyée par l'utilisateur courant, ni
   déjà rattachée à cette question, donne `403` et n'enregistre rien.
+- **Retrait explicite** : chaque image retirée depuis le chargement de la question est envoyée
+  dans la même liste sous la forme `{ "operation": "detach", "key": 790 }`. Pour la relation
+  `images`, un `detach` **supprime** l'image définitivement : elle ne revient jamais en attente.
+  - Seule une image de cette question peut être détachée, sinon `403`.
+  - C'est le seul moyen de retirer la dernière image d'un recto qui a du texte, car raom
+    0.3.7 n'envoie pas une liste `relations.images` vide.
+  - Les `detach` ne comptent ni dans la limite de 4 ni pour la règle du recto.
 - **Effets** :
-  - les images absentes de la liste sont supprimées définitivement ;
+  - les images détachées, et les images absentes d'une liste non vide, sont supprimées
+    définitivement ;
   - les autres prennent l'`alt` et la `position` reçus ;
   - la progression Leitner ne change pas.
 - **Sans `relations.images`** (texte seul modifié, question sans image) : les images existantes
