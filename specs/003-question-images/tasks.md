@@ -344,7 +344,7 @@ inscrit, s'affiche une fois le sujet publié, puis donne de nouveau `404` après
 **Purpose**: vérifications transverses, performance et validation de bout en bout.
 
 - [X] T055 [P] Mesurer dans un test de `back/functional/catalog/tests/Feature/QuestionImageUploadTest.php` qu'une image de 5 Mo et 4 000 px est traitée en moins de 2 secondes dans Sail. Consigner le temps mesuré dans `specs/003-question-images/quickstart.md`
-- [ ] T056 [P] Vérifier à 360, 768 et 1 440 px de large, dans le build de production de `web/`, l'éditeur avec 4 images, la lecture d'un sujet, le mode cartes et la séance : ni défilement horizontal ni libellé tronqué, focus visible, cibles de 44 px. Vérifier aussi que les images de `/api/question-images/*` ne sont pas servies par le service worker (`NetworkOnly`, `web/technical/Pwa/nuxt.config.ts` inchangé)
+- [X] T056 [P] Vérifier à 360, 768 et 1 440 px de large, dans le build de production de `web/`, l'éditeur avec 4 images, la lecture d'un sujet, le mode cartes et la séance : ni défilement horizontal ni libellé tronqué, focus visible, cibles de 44 px. Vérifier aussi que les images de `/api/question-images/*` ne sont pas servies par le service worker (`NetworkOnly`, `web/technical/Pwa/nuxt.config.ts` inchangé)
 - [ ] T057 [P] Mesurer à 360 px, dans les outils du navigateur, qu'une carte à 4 images charge moins de 500 Ko (SC-003). Consigner le résultat dans `specs/003-question-images/quickstart.md`
 - [X] T058 Lancer toutes les vérifications :
   - `./vendor/bin/sail artisan test` et `./vendor/bin/sail bin pint --dirty` dans `back/` ;

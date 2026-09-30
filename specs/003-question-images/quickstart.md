@@ -33,6 +33,29 @@ Attendu : tout est vert. Les tests de visibilité couvrent la matrice complète 
   `QuestionImageUploadTest::test_a_5_mb_photo_of_4000_px_is_processed_within_2_seconds` : un JPEG
   bruité de 4 000 × 3 000 px et 4,99 Mo est réorienté, réduit en trois variantes WebP et
   enregistré en **0,47 à 0,64 s** (6 mesures, requête HTTP complète), sous l'objectif de 2 s.
+- **Mise en page (T056)**, vérifiée le 2026-09-30 dans le build de production (`pnpm build`,
+  `node .output/server/index.mjs`) sur un sujet publié dont la question porte 4 images décrites :
+  - l'éditeur (4 lignes d'image), la page du sujet, le mode cartes et la séance, avant et après
+    le verso, à 360, 768 et 1 440 px : aucun défilement horizontal, aucun texte tronqué, et
+    aucune cible des images de moins de 44 px (le bouton « Fermer » de la visionneuse mesure
+    44,6 px une fois l'animation d'ouverture finie) ;
+  - « Je savais » et « Je ne savais pas » restent atteignables sous les 4 images ;
+  - au clavier, Entrée sur une image ouvre la visionneuse avec la variante de 1 600 px et sa
+    légende, et Échap la referme en rendant le focus à l'image ;
+  - à 360 px en densité ×2, le navigateur choisit la variante de 480 px, en `lazy` dans le sujet
+    et en `eager` en séance ;
+  - service worker : le `sw.js` généré sert `/api/*`, dont `/api/question-images/*`, en
+    `NetworkOnly`, et `technical/Pwa/nuxt.config.ts` est inchangé. Le navigateur intégré de
+    Claude refuse d'enregistrer un service worker : l'absence de mise en cache n'a pas pu être
+    observée à l'exécution, elle reste à confirmer sur un appareil (T059).
+- **Poids d'une carte à 4 images à 360 px (T057)**, mesuré le 2026-09-30 sur la page d'un sujet :
+  la page sans ses images (HTML, JS, CSS) pèse **116 Ko** transférés. Les 4 images de test
+  étaient des dégradés bruités générés dans le navigateur ; leurs variantes de 480 px pèsent de
+  1 à 5 Ko et ne sont pas représentatives. Borne haute calculée avec du bruit aléatoire pur, que
+  n'atteint aucune photo : 104 Ko pour une image 480 × 320, 206 Ko pour une 480 × 640, soit
+  532 Ko pour la page et 4 paysages, et 940 Ko avec 4 portraits. La limite de 500 Ko laisse
+  384 Ko aux 4 images, 96 Ko chacune, ce qu'une photo ordinaire en WebP qualité 80 et 480 px de
+  large respecte en général. **À mesurer avec de vraies photos** pendant T059.
 
 ## Scénarios manuels
 
