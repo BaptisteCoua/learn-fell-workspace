@@ -55,7 +55,15 @@ Attendu : tout est vert. Les tests de visibilité couvrent la matrice complète 
   n'atteint aucune photo : 104 Ko pour une image 480 × 320, 206 Ko pour une 480 × 640, soit
   532 Ko pour la page et 4 paysages, et 940 Ko avec 4 portraits. La limite de 500 Ko laisse
   384 Ko aux 4 images, 96 Ko chacune, ce qu'une photo ordinaire en WebP qualité 80 et 480 px de
-  large respecte en général. **À mesurer avec de vraies photos** pendant T059.
+  large respecte en général. Mesuré ensuite par le développeur avec de vraies photos (T059) :
+  sous 500 Ko.
+- **Scénarios manuels (T059)**, déroulés le 2026-09-30 par le développeur sur PC (Chrome, mode
+  appareil à 360 px), avec de vraies photos : éditeur (orientation, description obligatoire,
+  refus des formats et des tailles, limite de 4, ordre, recto « image seule », recto vide,
+  hors ligne), lecture déconnectée, visionneuse, repli sur la description, séance et absence de
+  mise en cache par le service worker : tout est conforme. US3 et Leitner sont couverts par les
+  tests automatisés (`QuestionImageVisibilityTest`, `QuestionImageDeletionTest`,
+  `ContentChangesTest`).
 
 ## Scénarios manuels
 
