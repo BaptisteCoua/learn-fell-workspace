@@ -14,7 +14,7 @@ schéma. La règle de validation du recto de `questions` change (R7).
 | `position` | smallint, nullable | 0 à 3, obligatoire dès le rattachement | ordre sur le recto (FR-005) |
 | `width` | smallint | | largeur de la plus grande variante, en px |
 | `height` | smallint | | hauteur de la plus grande variante, en px |
-| `variant_widths` | json | liste d'entiers, sous-ensemble de `[480, 960, 1600]` | variantes réellement produites (une petite image n'est jamais agrandie) |
+| `variant_widths` | json | liste d'entiers, sous-ensemble de `[480, 960, 1600]` | emplacements d'URL disponibles. Une source plus étroite que 1 600 px occupe chaque emplacement inférieur à sa largeur, plus l'emplacement suivant, qui reçoit le fichier à sa largeur réelle, jamais agrandi (source de 700 px : `[480, 960]`, et le fichier 960 fait 700 px) |
 | `created_at`, `updated_at` | timestamps | index composé (`question_id`, `created_at`) | élagage des images en attente |
 
 - **Fichiers** : `question-images/{id}/{largeur}.webp` sur le disque `catalog.images.disk`.

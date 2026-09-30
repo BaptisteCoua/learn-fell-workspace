@@ -27,6 +27,13 @@ cd web && pnpm test && pnpm lint && pnpm exec prettier --check .
 Attendu : tout est vert. Les tests de visibilité couvrent la matrice complète de SC-004 (5 états
 × 4 profils, plus l'image en attente).
 
+## Mesures
+
+- **Traitement d'une image de 5 Mo (T055)**, mesuré le 2026-09-29 dans Sail par
+  `QuestionImageUploadTest::test_a_5_mb_photo_of_4000_px_is_processed_within_2_seconds` : un JPEG
+  bruité de 4 000 × 3 000 px et 4,99 Mo est réorienté, réduit en trois variantes WebP et
+  enregistré en **0,47 à 0,64 s** (6 mesures, requête HTTP complète), sous l'objectif de 2 s.
+
 ## Scénarios manuels
 
 ### US1 : ajouter des images

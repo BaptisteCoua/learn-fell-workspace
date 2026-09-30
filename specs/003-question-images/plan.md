@@ -57,9 +57,9 @@ ouvert tant que la merge request du back n'est pas fusionnée et déployée.
 - `back/` :
   - déjà installés : `xefi/laravel-osdd`, `lomkit/laravel-rest-api` 2.23,
     `lomkit/laravel-access-control` 0.5, `stevebauman/purify` 6.3, `laravel/sanctum` ;
-  - à ajouter : `intervention/image`, dernière version stable, avec le pilote Imagick
-    (`php8.5-imagick` est déjà dans le runtime Sail). **L'ajout demande l'accord du
-    développeur** (`back/AGENTS.md`).
+  - ajouté : `intervention/image` 4.3 (4.3.3 installé, `^4.3`), avec le pilote Imagick
+    (`imagick` et `exif` sont chargés dans le runtime Sail). Ajout approuvé par le
+    développeur le 2026-09-29 (`back/AGENTS.md`).
 - `web/` : aucune nouvelle dépendance. `v-dialog` de Vuetify sert de visionneuse, et
   `XMLHttpRequest` fait l'envoi avec progression.
 
