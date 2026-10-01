@@ -89,17 +89,20 @@ than inferring conventions from whatever the existing code happens to do.
 
 ## Landing a feature that spans several repos
 
-A feature touching the back and the mobile app produces two independent commits
-in two independent repositories, with no transaction around them. Nothing
-prevents a half-landed feature, so the sequencing is your job.
+A feature touching the back and the web produces two independent commits in two
+independent repositories, with no transaction around them. Nothing prevents a
+half-landed feature, so the sequencing is your job.
 
-- **One merge request per repo**, each cross-linked by the feature number so a
-  reviewer can find the other halves.
-- **Merge in dependency order.** The provider goes first — a mobile app or a
-  frontend calling a new endpoint cannot merge before the endpoint exists on the
-  back's trunk. Say the order explicitly when you open the MRs.
-- **A consumer MR stays open until its provider is merged and deployed.** Do not
-  merge a mobile MR against an endpoint that only exists on a feature branch.
+CINQ has no merge requests (constitution 2.0.0, « Flux de travail »): at the end
+of the cycle, you land the feature yourself, without asking again.
+
+- **Fast-forward each feature branch onto `main`, then push**, once every test
+  and static analysis of that repo is green. If `origin/main` has moved and a
+  fast-forward is impossible, stop and say so rather than merging another way.
+- **Land in dependency order.** The provider goes first: the back is merged and
+  pushed before the web that calls its endpoints.
+- **Check the constitution before each merge**, principles III, IV and VI in
+  particular, and stop instead of merging if one is not met.
 - **Nothing is done while any affected repo has uncommitted work, sits on the
   wrong branch, or has unpushed commits.** `/speckit-implement` runs
   `speckit.multirepo.status` afterwards and reports exactly that, per repo. Take

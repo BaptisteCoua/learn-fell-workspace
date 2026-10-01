@@ -49,7 +49,7 @@ des couches isolées permettent de les faire grandir sans enchevêtrement.
 - Les règles Leitner (boîte d'arrivée, intervalle, maintien en boîte 5, retour en boîte 1) et
   l'invisibilité des brouillons et sujets retirés pour les personnes non autorisées DOIVENT être
   couvertes à 100 % de leurs cas.
-- Aucune merge request n'est fusionnée avec un test rouge ou une analyse statique en échec.
+- Aucune branche n'est fusionnée sur `main` avec un test rouge ou une analyse statique en échec.
 
 Raison : la promesse du produit est de faire revenir la bonne carte au bon moment ; une erreur
 dans ce calcul est invisible pour l'utilisateur et ruine l'apprentissage.
@@ -101,11 +101,14 @@ dans ce calcul est invisible pour l'utilisateur et ruine l'apprentissage.
   puis convergence jusqu'à ce que le code corresponde à la spec, au plan et aux tâches.
 - Le développement se fait sur une branche de feature dans chaque repo concerné, créée à partir de
   la branche principale de ce repo avant la première ligne de code.
-- Une merge request par repo, liées entre elles par le numéro de feature, fusionnées dans l'ordre
-  des dépendances : le back d'abord, le web ensuite. Une merge request web reste ouverte tant que
-  l'endpoint qu'elle consomme n'est pas fusionné et déployé côté back.
+- Il n'y a pas de merge request. Dès que tous les tests et analyses d'un repo sont verts, sa
+  branche de feature est fusionnée sur `main` en avance rapide, puis poussée.
+- La fusion suit l'ordre des dépendances : le back est fusionné et poussé avant le web, qui
+  consomme ses endpoints.
+- Claude fait cette fusion et ce push à la fin du cycle, sans redemander. Si `main` a avancé
+  entre-temps et que l'avance rapide est impossible, il s'arrête et le signale au lieu de
+  fusionner autrement.
 - Messages de commit à l'impératif, en anglais, sans aucune mention d'IA.
-- Claude ne fusionne jamais une branche : le développeur s'en charge.
 - Une feature n'est terminée que si aucun repo concerné n'a de travail non commité, de mauvaise
   branche ou de commit non poussé.
 
@@ -118,7 +121,7 @@ dans ce calcul est invisible pour l'utilisateur et ruine l'apprentissage.
   élargi, CORRECTIVE pour une clarification sans effet sur les règles.
 - Chaque plan comporte une vérification de conformité (Constitution Check) avant la conception
   et après celle-ci. Tout écart y est justifié ; un écart non justifié bloque le plan.
-- La relecture de chaque merge request vérifie le respect des principes, en particulier les
-  principes III, IV et VI.
+- Avant chaque fusion sur `main`, Claude vérifie le respect des principes, en particulier les
+  principes III, IV et VI, et s'arrête au lieu de fusionner si l'un d'eux n'est pas tenu.
 
-**Version**: 1.0.1 | **Ratified**: 2026-09-24 | **Last Amended**: 2026-09-24
+**Version**: 2.0.0 | **Ratified**: 2026-09-24 | **Last Amended**: 2026-10-01
