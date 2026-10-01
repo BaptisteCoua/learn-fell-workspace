@@ -55,8 +55,11 @@ règle) ; repasser les sujets en brouillon (l'annulation ne saurait plus lesquel
 
 ## R4. Masquer le nom pendant le délai et après l'effacement
 
-**Decision**: `PublicUserResource` expose `display_name` à travers un accesseur `public_name` du
-modèle `User`, nul quand `deletion_requested_at` est renseigné. Après l'effacement, les colonnes
+**Decision**: un accesseur sur `display_name` lui-même, dans le modèle `User`, le rend nul quand
+`deletion_requested_at` est renseigné ; `PublicUserResource` est inchangé. Lomkit sérialise par
+`attributesToArray()` et ne sait pas renommer un champ, d'où l'accesseur sur la colonne plutôt
+qu'un `public_name` exposé sous un autre nom. Les emails que reçoit le compte lui-même lisent son
+nom brut par `ownDisplayName()`. Après l'effacement, les colonnes
 `subjects.author_id`, `question_images.uploader_id`, `reports.reporter_id` et
 `moderation_decisions.admin_id` deviennent nullables, et la relation est nulle. Le web affiche
 « Auteur supprimé » pour un sujet et « Compte supprimé » dans la modération quand la relation ou

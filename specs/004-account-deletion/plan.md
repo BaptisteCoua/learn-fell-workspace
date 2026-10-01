@@ -124,7 +124,7 @@ back/
     │   ├── lang/fr/notifications.php       # + email de demande
     │   ├── database/migrations/            # + deletion_requested_at, keeps_published_subjects
     │   ├── src/
-    │   │   ├── Models/User.php             # public_name, prunable() élargi, prune() transactionnel
+    │   │   ├── Models/User.php             # display_name masqué, prunable() élargi, prune() transactionnel
     │   │   ├── Events/                     # AccountDeletionRequested, AccountDeletionCancelled
     │   │   ├── Actions/                    # RequestAccountDeletion ; AuthenticateUser annule
     │   │   ├── Support/                    # LastAdministratorGuard
@@ -155,8 +155,8 @@ back/
 web/
 └── functional/
     ├── Account/
-    │   ├── app/pages/compte/suppression.vue            # écran, choix, mot de passe
-    │   ├── app/pages/compte/suppression-demandee.vue   # confirmation et date (sans session)
+    │   ├── app/pages/supprimer-mon-compte.vue            # écran, choix, mot de passe
+    │   ├── app/pages/compte-supprime.vue   # confirmation et date (sans session)
     │   ├── app/composables/                # useAccountDeletion ; useAuth (deleteAccount) ; useLoginForm (annulation)
     │   ├── app/components/AccountMenuPanel.vue          # + entrée « Supprimer mon compte »
     │   ├── i18n/locales/fr.json

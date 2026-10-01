@@ -14,8 +14,8 @@ Colonnes ajoutées :
 Valeur dérivée : **date d'effacement** = `deletion_requested_at` + 30 jours (constante
 `User::DELETION_GRACE_DAYS`, sans option de configuration : principe VII).
 
-Accesseur ajouté : `public_name`, égal à `display_name`, ou nul quand `deletion_requested_at` est
-renseigné. `PublicUserResource` l'expose sous le nom `display_name`.
+Accesseur ajouté sur `display_name` : la valeur stockée, ou nul quand `deletion_requested_at` est
+renseigné. `ownDisplayName()` rend la valeur stockée, pour les emails du compte lui-même.
 
 ### États
 
