@@ -39,7 +39,9 @@ renseigné. `PublicUserResource` l'expose sous le nom `display_name`.
   d'administration (`categories.manage`, `subjects.moderate`, `reports.review`,
   `moderation.history.view`) : `last_admin`, 422.
 - `keeps_published_subjects` est obligatoire si le compte a au moins un sujet `published`
-  (`subject_choice_required`, 422), et ignoré sinon.
+  (`subject_choice_required`, 422), et sans effet sinon. La règle est vérifiée par la couche
+  `catalog`, dans l'écouteur de `AccountDeletionRequested`, à l'intérieur de la transaction de la
+  demande : l'erreur annule tout.
 - Un compte déjà en suppression ne peut pas refaire de demande : il est déconnecté.
 
 ### Élagage
