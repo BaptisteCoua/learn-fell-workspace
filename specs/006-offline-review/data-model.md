@@ -32,9 +32,11 @@ compte de fuseau `tz`. `jour(t)` = la date de `t` dans `tz`.
 1. `answer_id` existe → aucun effet.
 2. Carte absente, d'un autre compte, ou de sujet non publié → aucun effet, aucune ligne.
 3. `answered_at` > maintenant → `answered_at` = maintenant.
-4. `L` = réponses `applied` de la carte avec `answered_at` > R.`answered_at`, triées.
-   État de départ `S` = (`box`, `next_review_on`) de la carte si `L` est vide, sinon
-   (`from_box`, `due_on`) du premier élément de `L`.
+4. `L` = réponses de la carte avec `answered_at` > R.`answered_at`, `applied` ou `discarded`,
+   triées. État de départ `S` = (`box`, `next_review_on`) de la carte si `L` n'a aucune réponse
+   `applied`, sinon (`from_box`, `due_on`) de la plus ancienne réponse `applied` de `L`. Les
+   réponses `discarded` sont rejouées aussi : une réponse écartée parce qu'une plus ancienne
+   manquait encore (réponses reçues dans le désordre, FR-012) est appliquée quand celle-ci arrive.
 5. Pour chaque réponse X de `[R] + L`, dans l'ordre de `answered_at` :
    - si `S.next_review_on` = X.`due_on` et `S.next_review_on` ≤ `jour(X.answered_at)` →
      `applied`, `from_box` = `S.box`, `to_box` = `arrivalBox(S.box, known)`, et
@@ -66,11 +68,11 @@ Ajoute `timezone` à la réponse. Aucun changement de schéma.
 
 | Champ | Type | Source |
 |---|---|---|
-| `user_id` | number | `ISessionUser.id` ; propriétaire de tout le contenu de la base |
+| `user_id` | number | `ISessionUser.id` ; propriétaire du paquet |
 | `timezone` | string | `ISessionUser.timezone` |
 | `updated_at` | string ISO | heure de l'appareil à la mise à jour |
-| `learnings` | tableau | `learnings/search` : `id`, `subject_id`, titre du sujet, `box_1_count` à `box_5_count` |
-| `cards` | tableau | instruction `upcoming` : `id`, `subject_id`, `question_id`, `position`, `box`, `next_review_on`, `recto_html`, `verso_html`, `image_alts[]` |
+| `learnings` | tableau | `learnings/search` : `id`, `subject_id`, `subject` (`id`, `title`, `category.name`), `box_1_count` à `box_5_count`, `next_review_on` |
+| `cards` | tableau | instruction `upcoming`, à la forme de l'API : `id`, `subject_id`, `question_id`, `box`, `next_review_on`, `subject` (`id`, `title`), `question` (`recto_html`, `verso_html`, `position`, `images[]` réduites à `alt` et `position`) |
 
 Règles :
 
@@ -81,14 +83,15 @@ Règles :
   `subject_id`, `position` (FR-006). Hors ligne, `J` = `jour(maintenant)` dans `timezone` ; si
   `J` dépasse `updated_at` + 7 jours, le message de reconnexion s'affiche (US4-5).
 
-### Magasin `answers` (clé `answer_id`, index `answered_at`)
+### Magasin `answers` (clé `answer_id`)
 
 | Champ | Type | Règle |
 |---|---|---|
 | `answer_id` | string | `crypto.randomUUID()` |
+| `user_id` | number | compte qui a répondu ; un autre compte connecté efface la base |
 | `card_progress_id` | number | |
 | `known` | boolean | |
-| `answered_at` | string ISO avec décalage | heure de l'appareil au moment de la réponse |
+| `answered_at` | string ISO 8601 en UTC | heure de l'appareil au moment de la réponse ; triée par l'heure qu'elle désigne |
 | `due_on` | string `YYYY-MM-DD` | `next_review_on` de la carte au moment de la réponse |
 
 Cycle de vie : écrit dès la réponse (FR-008) → envoyé dans l'ordre de `answered_at` → supprimé

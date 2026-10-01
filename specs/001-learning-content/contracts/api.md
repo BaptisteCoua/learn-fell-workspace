@@ -125,6 +125,10 @@ par `learnings`. Ainsi, aucune couche n'ajoute d'action sur la ressource d'une a
   Leitner (FR-046) et enregistre la réponse (FR-048). Comme toute action lomkit, elle renvoie le
   nombre d'éléments touchés : le web relit la carte (`box`, `next_review_on`) pour afficher
   `from_box`, `to_box` et la prochaine date (FR-047). 409 `card_not_due` si la carte n'est pas due, ce qui couvre le double clic.
+  **Modifié par la feature 006** : l'action accepte `answer_id`, `answered_at` et `due_on`, applique
+  chaque réponse à l'heure où elle a été donnée, et répond `200` dans tous les cas métier ; le code
+  `card_not_due` est retiré. Voir [006, contrat d'API](../../006-offline-review/contracts/api.md).
+  Une instruction `upcoming` (cartes des 7 prochains jours) s'ajoute à `due`.
 - **Bilan de séance** : le web l'établit à partir des réponses de la séance et d'une recherche
   `learnings` sur les sujets sélectionnés (FR-049).
 
