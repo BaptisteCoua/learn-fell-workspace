@@ -190,6 +190,6 @@ Le dernier compte qui dispose de droits d'administration (modération ou gestion
 - **Délai de 30 jours** : un délai d'usage pour ce type de service, qui laisse le temps de changer d'avis sans conserver les données plus longtemps que nécessaire.
 - **Aucun email à l'effacement définitif** : une fois le compte effacé, CINQ n'a plus de raison de contacter la personne ; l'email de la demande donne déjà la date.
 - **Dernier compte d'administration** : la règle tient tant qu'aucun écran ne permet de nommer un administrateur ; elle sera revue si un tel écran est livré.
-- **Adresse email pendant le délai** : elle reste prise ; une inscription avec cette adresse reçoit la même réponse que pour toute adresse déjà prise (feature 001). Cette réponse indique aujourd'hui que l'adresse est utilisée, ce qui s'écarte du principe VI de la constitution ; l'écart date de la feature 001 et sera traité à part.
+- **Adresse email pendant le délai** : elle reste prise ; une inscription avec cette adresse reçoit la même réponse que pour toute adresse déjà prise (feature 001). Depuis la feature 005, cette réponse est la même que pour une adresse libre : l'écart au principe VI de la constitution, hérité de la feature 001, est résolu.
 - **Personnes qui apprenaient un sujet effacé** : elles ne reçoivent aucune notification ; le sujet disparaît de leurs révisions comme un sujet dépublié (feature 001).
 - **Contenu laissé à la communauté** : un sujet signé « Auteur supprimé » ne peut plus être modifié par personne ; seule la modération peut encore le retirer.

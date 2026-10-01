@@ -175,4 +175,4 @@ parle d'elle-même » : le résumé avant suppression, qui combine sujets et app
 
 | Écart | Pourquoi il est accepté | Alternative écartée parce que |
 |---|---|---|
-| L'inscription répond « adresse déjà utilisée » (principe VI), écart de la 001 | La 004 garde la même réponse pendant le délai, donc rien ne distingue un compte en suppression ; corriger l'inscription change un parcours de la 001 et mérite sa propre spec | Corriger ici élargirait la 004 à un parcours sans lien avec la suppression |
+| L'inscription répond « adresse déjà utilisée » (principe VI), écart de la 001 — **résolu par la feature 005** | La 004 garde la même réponse pendant le délai, donc rien ne distingue un compte en suppression ; corriger l'inscription change un parcours de la 001 et mérite sa propre spec | Corriger ici élargirait la 004 à un parcours sans lien avec la suppression |
