@@ -52,7 +52,7 @@ premier et doivent échouer avant l'implémentation. La table des cas par exigen
 
 ## Phase 1: Setup
 
-- [ ] T001 Dans `back/`, ajouter `openspout/openspout` et `league/commonmark` en dépendances
+- [X] T001 Dans `back/`, ajouter `openspout/openspout` et `league/commonmark` en dépendances
   directes, en version stable la plus récente (`./vendor/bin/sail composer require
   openspout/openspout league/commonmark`, attendues en 4.x et 2.x, research R1 et R3). Les déclarer
   aussi dans `back/functional/catalog/composer.json`. Vérifier que seuls `back/composer.json`,
@@ -68,28 +68,28 @@ change encore.
 
 ### Back
 
-- [ ] T002 Créer une migration dans `back/functional/catalog/database/migrations/` qui ajoute à
+- [X] T002 Créer une migration dans `back/functional/catalog/database/migrations/` qui ajoute à
   `questions` la colonne `import_id` « uuid, nul », sans valeur par défaut en base, et un index
   `(subject_id, import_id)`. Dans `back/functional/catalog/src/Models/Question.php`, ajouter
   `import_id` au `#[Fillable]` et au `#[Hidden]`. Vérifier que
   `back/functional/catalog/src/Rest/Resources/QuestionResource.php` ne l'expose pas dans ses
   `fields()` (data-model).
-- [ ] T003 [P] Dans `back/functional/catalog/src/Casts/SanitizedHtml.php`, extraire le corps de
+- [X] T003 [P] Dans `back/functional/catalog/src/Casts/SanitizedHtml.php`, extraire le corps de
   `set()` (`Purify::clean()` puis `<a rel="noopener nofollow ugc" href=`) en méthode statique
   publique `clean(?string $html): string`, que `set()` appelle. Le comportement ne change pas :
   `./vendor/bin/sail artisan test --compact functional/catalog/tests/Feature/QuestionContentTest.php`
   reste vert (research R4).
-- [ ] T004 [P] Dans `back/functional/catalog/config/catalog.php`, ajouter le bloc `import` :
+- [X] T004 [P] Dans `back/functional/catalog/config/catalog.php`, ajouter le bloc `import` :
   `max_kilobytes` = 5120, `max_lines` = 2000, `extensions` = `['csv', 'tsv', 'txt', 'xlsx']`
   (data-model).
-- [ ] T005 [P] Ajouter à `back/technical/osdd/lang/fr/errors.php` les codes `import_unreadable`,
+- [X] T005 [P] Ajouter à `back/technical/osdd/lang/fr/errors.php` les codes `import_unreadable`,
   `import_too_large`, `import_single_column`, `import_empty`, `question_limit_exceeded` (avec
   `:remaining` et `:max`) et `import_has_errors`. Créer `back/technical/osdd/lang/fr/import.php`
   avec les messages de ligne (`recto_empty`, `verso_empty`, `recto_too_long`, `verso_too_long`,
   avec `:max`), d'avertissement (`duplicate_in_subject` avec `:position`, `duplicate_in_source`
   avec `:line`), de notice (`extra_columns_ignored`, `first_sheet_only`, `header_ignored`), les
   en-têtes reconnus et les textes du modèle. Tout est en français, en vouvoyant (contrat).
-- [ ] T006 [P] Test unitaire `back/functional/catalog/tests/Unit/MarkdownCellTest.php`, en échec.
+- [X] T006 [P] Test unitaire `back/functional/catalog/tests/Unit/MarkdownCellTest.php`, en échec.
   Il couvre FR-024, FR-025 et SC-007 :
   - sont convertis : `**gras**`, `*italique*`, `_italique_`, listes `-` et `1.`, code en ligne et
     bloc délimité par trois accents graves, `[texte](https://…)`, `<https://…>` ;
@@ -102,7 +102,7 @@ change encore.
   - un retour à la ligne simple donne `<br>`.
 
   Chaque sortie passe par `SanitizedHtml::clean()`.
-- [ ] T007 Créer `back/functional/catalog/src/Import/MarkdownCell.php` pour faire passer T006
+- [X] T007 Créer `back/functional/catalog/src/Import/MarkdownCell.php` pour faire passer T006
   (research R3) :
   - un `Environment` de `league/commonmark` **sans** `CommonMarkCoreExtension`, qui n'enregistre
     que les paragraphes, les listes, le code délimité, l'emphase (`*`, `_`), le code en ligne, les
@@ -113,7 +113,7 @@ change encore.
     (`(?<=[\p{L}\p{N}])\*(?=[\p{L}\p{N}])`) est échappé ;
   - une méthode `toHtml(string $cell): string` qui renvoie le résultat de
     `SanitizedHtml::clean()`.
-- [ ] T008 [P] Test unitaire `back/functional/catalog/tests/Unit/SourceDecoderTest.php`, en échec :
+- [X] T008 [P] Test unitaire `back/functional/catalog/tests/Unit/SourceDecoderTest.php`, en échec :
   - le BOM UTF-8 est retiré ;
   - l'UTF-8 valide est gardé ;
   - le Windows-1252 (« é », « œ », « € ») est converti en UTF-8 ;
@@ -123,10 +123,10 @@ change encore.
     pour Google Sheets, tabulation) ;
   - une phrase qui contient des virgules, dans un CSV à `;`, garde `;` ;
   - à égalité, l'ordre est tabulation, `;`, `,` (FR-004, research R2).
-- [ ] T009 Créer `back/functional/catalog/src/Import/SourceDecoder.php` pour faire passer T008.
+- [X] T009 Créer `back/functional/catalog/src/Import/SourceDecoder.php` pour faire passer T008.
   Il expose `decode(string $bytes): string` et `detectSeparator(string $text): ?string`, qui
   renvoie `null` si aucun candidat ne donne deux colonnes.
-- [ ] T010 [P] Test unitaire `back/functional/catalog/tests/Unit/SourceReaderTest.php`, partie
+- [X] T010 [P] Test unitaire `back/functional/catalog/tests/Unit/SourceReaderTest.php`, partie
   « texte délimité », en échec. `records(string $text, string $separator)` lit avec `fgetcsv` sur
   `php://temp` et `escape: ""` :
   - guillemets doublés ;
@@ -137,7 +137,7 @@ change encore.
   - lignes vides ignorées ;
   - espaces des bords retirés ;
   - plus de deux colonnes signalées (FR-003, FR-005, FR-008).
-- [ ] T011 Créer `back/functional/catalog/src/Import/SourceReader.php` (partie texte délimité) et
+- [X] T011 Créer `back/functional/catalog/src/Import/SourceReader.php` (partie texte délimité) et
   `back/functional/catalog/src/Import/ImportedRow.php`, pour faire passer T010.
   - Le lecteur renvoie des enregistrements `{ line, recto, verso }` et les notices
     `extra_columns_ignored` et `header_ignored`.
@@ -149,13 +149,13 @@ change encore.
 
 ### Web
 
-- [ ] T012 [P] Test dans `web/technical/ApiClient/tests/uploadRequest.nuxt.spec.ts`, en échec :
+- [X] T012 [P] Test dans `web/technical/ApiClient/tests/uploadRequest.nuxt.spec.ts`, en échec :
   `upload(path, file, { import_id: '…' })` envoie `file` et `import_id` dans le `FormData`. Sans
   troisième argument, l'envoi est inchangé (research R12).
-- [ ] T013 Dans `web/technical/ApiClient/app/composables/useUploadRequest.ts`, ajouter le
+- [X] T013 Dans `web/technical/ApiClient/app/composables/useUploadRequest.ts`, ajouter le
   paramètre facultatif `fields?: Record<string, string>`, ajouté au `FormData` après `file`, pour
   faire passer T012.
-- [ ] T014 [P] Renommer `web/functional/Authoring/app/composables/useImagePicker.ts` en
+- [X] T014 [P] Renommer `web/functional/Authoring/app/composables/useImagePicker.ts` en
   `web/functional/Authoring/app/composables/useFilePicker.ts`, avec `accept` reçu en paramètre.
   Mettre à jour `web/functional/Authoring/app/components/QuestionImagesField.vue`, qui passe
   `image/jpeg,image/png,image/webp`. Les tests existants des images restent verts.
@@ -176,7 +176,7 @@ fichier.
 
 ### Tests (écrits d'abord, en échec)
 
-- [ ] T015 [P] [US1] Créer les fixtures dans `back/functional/catalog/tests/fixtures/import/`.
+- [X] T015 [P] [US1] Créer les fixtures dans `back/functional/catalog/tests/fixtures/import/`.
   Chacune reproduit la sortie du tableur nommé :
   - `excel-fr.csv` : Windows-1252, `;`, CRLF, accents et « € » ;
   - `google-sheets.csv` : UTF-8 sans BOM, `,`, une cellule entre guillemets avec virgule et retour
@@ -188,14 +188,14 @@ fichier.
   - `two-sheets.xlsx`, avec une formule et un nombre entier ;
   - `corrupt.xlsx` ;
   - `not-a-sheet.pdf`.
-- [ ] T016 [P] [US1] Test unitaire, partie fichiers, dans
+- [X] T016 [P] [US1] Test unitaire, partie fichiers, dans
   `back/functional/catalog/tests/Unit/SourceReaderTest.php`, en échec :
   - chaque CSV de T015 donne les mêmes 50 enregistrements, accents justes (SC-002) ;
   - chaque XLSX aussi ;
   - `two-sheets.xlsx` : première feuille seulement, notice `first_sheet_only`, formule lue par sa
     valeur, nombre entier sans `.0` (FR-006) ;
   - `corrupt.xlsx` lève `import_unreadable`.
-- [ ] T017 [P] [US1] Test `back/functional/catalog/tests/Feature/QuestionImportPreviewTest.php`,
+- [X] T017 [P] [US1] Test `back/functional/catalog/tests/Feature/QuestionImportPreviewTest.php`,
   partie accès et fichier, en échec. Il couvre `POST /api/subjects/{subject}/question-import/preview` :
   - auteur → `200` avec `rows`, `notices`, `errors`, `question_count`, `error_line_count`,
     `can_confirm` (contrat) ;
@@ -208,7 +208,7 @@ fichier.
   - fichier de 5 121 Ko ou de 2 001 lignes → `422 import_too_large` ;
   - ni `file` ni `text`, ou les deux → `422` sur `file` ;
   - après l'aperçu, le sujet est inchangé (FR-001, FR-002, FR-009, FR-010, FR-013).
-- [ ] T018 [P] [US1] Test `back/functional/catalog/tests/Feature/QuestionImportTest.php`, partie
+- [X] T018 [P] [US1] Test `back/functional/catalog/tests/Feature/QuestionImportTest.php`, partie
   nominale, en échec. Il couvre `POST /api/subjects/{subject}/question-import` :
   - sujet de 3 questions + XLSX de 50 lignes → `201 { data: { imported: 50 } }`, positions 4 à 53
     dans l'ordre du fichier, les 3 premières intactes ;
@@ -219,7 +219,7 @@ fichier.
     lomkit ;
   - `import_id` absent des réponses de `questions/search` ;
   - le `recto_html` de l'aperçu est identique à celui enregistré (FR-014 à FR-018, FR-027).
-- [ ] T019 [P] [US1] Test `back/functional/catalog/tests/Feature/QuestionImportTemplateTest.php`,
+- [X] T019 [P] [US1] Test `back/functional/catalog/tests/Feature/QuestionImportTemplateTest.php`,
   en échec :
   - `GET /api/question-import/template` → `200`, type
     `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`, `attachment;
@@ -230,7 +230,7 @@ fichier.
 
 ### Implémentation — back
 
-- [ ] T020 [US1] Compléter `back/functional/catalog/src/Import/SourceReader.php` avec :
+- [X] T020 [US1] Compléter `back/functional/catalog/src/Import/SourceReader.php` avec :
   - `fromFile(UploadedFile $file)` : XLSX par le reader d'OpenSpout, première feuille, valeurs de
     cellule, entiers sans décimale, dates au format `d/m/Y`, exception d'OpenSpout traduite en
     `import_unreadable` ;
@@ -238,18 +238,18 @@ fichier.
   - `import_single_column` si `detectSeparator()` renvoie `null`.
 
   Fait passer T016.
-- [ ] T021 [US1] Créer `back/functional/catalog/src/Import/QuestionImportPreview.php`. Il
+- [X] T021 [US1] Créer `back/functional/catalog/src/Import/QuestionImportPreview.php`. Il
   transforme les enregistrements en `ImportedRow` (recto et verso par `MarkdownCell::toHtml()`),
   rassemble les notices, et calcule `question_count`, `error_line_count` et `can_confirm` (vrai si
   aucune erreur et au moins une question). Les règles d'erreur viennent en US2.
-- [ ] T022 [US1] Créer `back/functional/catalog/src/Http/Requests/QuestionImportRequest.php` :
+- [X] T022 [US1] Créer `back/functional/catalog/src/Http/Requests/QuestionImportRequest.php` :
   - `file` : `required_without:text`, `prohibits:text`, `file`, `extensions:csv,tsv,txt,xlsx`,
     `mimes:csv,txt,xlsx`, `max:` + `catalog.import.max_kilobytes`, avec `bail` ;
   - `text` : `required_without:file`, `string`, `max:5242880` ;
   - `import_id` : `required`, `uuid`, seulement sur la route de confirmation.
 
   Les dépassements de taille répondent `import_too_large` (contrat).
-- [ ] T023 [US1] Créer `back/functional/catalog/src/Actions/ImportQuestions.php` (research R6) :
+- [X] T023 [US1] Créer `back/functional/catalog/src/Actions/ImportQuestions.php` (research R6) :
   1. `DB::transaction` ;
   2. `Subject::query()->lockForUpdate()->findOrFail()` ;
   3. si des questions du sujet portent déjà l'`import_id` : renvoyer leur nombre, avec un
@@ -261,14 +261,14 @@ fichier.
      `import_id`.
 
   `QuestionCreated` part pour chaque question (R7).
-- [ ] T024 [US1] Créer les contrôleurs invocables
+- [X] T024 [US1] Créer les contrôleurs invocables
   `back/functional/catalog/src/Http/Controllers/PreviewQuestionImportController.php`,
   `back/functional/catalog/src/Http/Controllers/StoreQuestionImportController.php` (`201` ou
   `200` selon l'indicateur de T023) et
   `back/functional/catalog/src/Http/Controllers/QuestionImportTemplateController.php`. Ce dernier
   s'appuie sur `back/functional/catalog/src/Import/TemplateWorkbook.php`, qui écrit le classeur
   avec le writer d'OpenSpout à partir de `lang/fr/import.php` (research R10).
-- [ ] T025 [US1] Dans `back/functional/catalog/routes/api.php`, déclarer les trois routes du
+- [X] T025 [US1] Dans `back/functional/catalog/routes/api.php`, déclarer les trois routes du
   contrat. Un commentaire indique que lomkit ne transporte ni un fichier ni un flux binaire.
   - `POST subjects/{subject}/question-import/preview` : `auth:sanctum`, `verified`, `throttle:30,1` ;
   - `POST subjects/{subject}/question-import` : `auth:sanctum`, `verified`, `throttle:10,1` ;
@@ -278,7 +278,7 @@ fichier.
 
 ### Implémentation — web
 
-- [ ] T026 [P] [US1] Test `web/functional/Authoring/tests/QuestionImportPage.nuxt.spec.ts`, partie
+- [X] T026 [P] [US1] Test `web/functional/Authoring/tests/QuestionImportPage.nuxt.spec.ts`, partie
   fichier, en échec (stubs `stubAuthoringApi` et `fakeUploadRequest`) :
   - `/sujets/{id}/importer` affiche l'onglet « Fichier » et le lien du modèle vers
     `/api/question-import/template` ;
@@ -291,26 +291,26 @@ fichier.
   - après `201`, retour à `/sujets/{id}/modifier` et toast « 50 questions ajoutées » ;
   - « Abandonner » revient à la source sans appel d'import ;
   - le bouton d'import est désactivé hors ligne.
-- [ ] T027 [P] [US1] Test dans `web/functional/Authoring/tests/SubjectEditor.nuxt.spec.ts`, en
+- [X] T027 [P] [US1] Test dans `web/functional/Authoring/tests/SubjectEditor.nuxt.spec.ts`, en
   échec : le bouton « Importer des questions » mène à `/sujets/{id}/importer`, et il est caché quand
   `isReadOnly`.
-- [ ] T028 [US1] Créer `web/functional/Authoring/app/composables/useQuestionImport.ts` :
+- [X] T028 [US1] Créer `web/functional/Authoring/app/composables/useQuestionImport.ts` :
   - état `source`, `importId` (`crypto.randomUUID()` renouvelé à chaque aperçu), `preview` et
     `phase` (`source` → `preview` → `importing`) ;
   - `previewFile(file)` et `confirm()` par `useUploadRequest().upload(path, file, { import_id })` ;
   - contrôle avant l'envoi : extension `.csv`, `.tsv`, `.txt`, `.xlsx` et taille ≤ 5 Mo ;
   - erreurs par `useApiError().toApiError()` ;
   - après l'import : `navigateTo('/sujets/{id}/modifier')` et `useToast().notify()`.
-- [ ] T029 [P] [US1] Créer `web/functional/Authoring/app/components/QuestionImportRow.vue`, une
+- [X] T029 [P] [US1] Créer `web/functional/Authoring/app/components/QuestionImportRow.vue`, une
   carte par ligne : « Ligne N », recto et verso par `RichTextView`, BEM et variables `--cinq-*`.
-- [ ] T030 [US1] Créer `web/functional/Authoring/app/components/QuestionImportSource.vue` (onglet
+- [X] T030 [US1] Créer `web/functional/Authoring/app/components/QuestionImportSource.vue` (onglet
   « Fichier » par `useFilePicker` avec
   `accept=".csv,.tsv,.txt,.xlsx"`, lien `<a :href download>` vers le modèle, court texte d'aide du
   format) et `web/functional/Authoring/app/components/QuestionImportPreview.vue` (résumé avec le
   nombre de questions et les notices, liste de `QuestionImportRow`, boutons « Importer N
   questions » et « Abandonner », import désactivé si `!can_confirm` ou `isOffline` avec
   explication).
-- [ ] T031 [US1] Créer `web/functional/Authoring/app/pages/sujets/[id]/importer.vue`
+- [X] T031 [US1] Créer `web/functional/Authoring/app/pages/sujets/[id]/importer.vue`
   (`definePageMeta({ middleware: 'auth' })`) qui assemble T028 à T030. Dans
   `web/functional/Authoring/app/pages/sujets/[id]/modifier.vue`, ajouter le bouton « Importer des
   questions », caché quand `isReadOnly`. Ajouter les clés à
@@ -331,7 +331,7 @@ reste inchangé. Corrigé, il s'importe en entier.
 
 ### Tests (écrits d'abord, en échec)
 
-- [ ] T032 [P] [US2] Compléter `back/functional/catalog/tests/Feature/QuestionImportPreviewTest.php` :
+- [X] T032 [P] [US2] Compléter `back/functional/catalog/tests/Feature/QuestionImportPreviewTest.php` :
   - verso vide en ligne 12 → `errors: [{ field: verso, code: verso_empty }]` sur la ligne 12 ;
   - recto de 5 001 caractères visibles → `recto_too_long` ;
   - cellule de moins de 5 000 caractères visibles mais de plus de 20 000 caractères de HTML →
@@ -342,14 +342,14 @@ reste inchangé. Corrigé, il s'importe en entier.
   - source faite seulement d'un en-tête et de lignes vides → `import_empty` ;
   - trois colonnes → `extra_columns_ignored` une seule fois et `can_confirm` vrai (FR-003, FR-008,
     FR-011, FR-012, US2-1 à US2-7).
-- [ ] T033 [P] [US2] Compléter `back/functional/catalog/tests/Feature/QuestionImportPreviewTest.php`
+- [X] T033 [P] [US2] Compléter `back/functional/catalog/tests/Feature/QuestionImportPreviewTest.php`
   pour FR-026 :
   - recto égal à celui de la question en position 4, avec une casse, des accents, des espaces et
     une mise en forme différents → `duplicate_in_subject` avec `position: 4` ;
   - deux lignes au même recto → `duplicate_in_source` avec `line` de la première, porté par la
     seconde ;
   - `can_confirm` reste vrai.
-- [ ] T034 [P] [US2] Compléter `back/functional/catalog/tests/Feature/QuestionImportTest.php` pour
+- [X] T034 [P] [US2] Compléter `back/functional/catalog/tests/Feature/QuestionImportTest.php` pour
   SC-003 : dans chaque cas suivant, le sujet est identique avant et après, et aucun job
   `AddQuestionToLearners` n'aboutit.
   - confirmation d'une source qui contient une erreur → `422 import_has_errors` ;
@@ -361,7 +361,7 @@ reste inchangé. Corrigé, il s'importe en entier.
 
 ### Implémentation
 
-- [ ] T035 [US2] Dans `back/functional/catalog/src/Import/QuestionImportPreview.php`, ajouter les
+- [X] T035 [US2] Dans `back/functional/catalog/src/Import/QuestionImportPreview.php`, ajouter les
   erreurs de ligne et d'ensemble :
   - `recto_empty`, `verso_empty` : `VisibleTextLength::of() === 0` ;
   - `recto_too_long`, `verso_too_long` : plus de `VisibleTextLength::MAX` (5 000) ou plus de
@@ -371,11 +371,11 @@ reste inchangé. Corrigé, il s'importe en entier.
     `remaining`.
 
   Faire passer T032 et T034.
-- [ ] T036 [US2] Dans le même fichier, ajouter les avertissements `duplicate_in_subject` et
+- [X] T036 [US2] Dans le même fichier, ajouter les avertissements `duplicate_in_subject` et
   `duplicate_in_source`, sur le recto normalisé (data-model) : balises retirées, entités
   décodées, minuscules, `Str::ascii`, espaces réduits et bords retirés. Les rectos du sujet sont
   chargés en une requête. Faire passer T033.
-- [ ] T037 [P] [US2] Compléter `web/functional/Authoring/tests/QuestionImportPage.nuxt.spec.ts` :
+- [X] T037 [P] [US2] Compléter `web/functional/Authoring/tests/QuestionImportPage.nuxt.spec.ts` :
   - un aperçu avec des erreurs affiche en tête « N lignes à corriger » et un lien vers chacune
     (ancre `#ligne-12`) ;
   - chaque erreur s'affiche en `role="alert"` sur sa ligne ;
@@ -384,7 +384,7 @@ reste inchangé. Corrigé, il s'importe en entier.
   - « Importer » est désactivé tant que `can_confirm` est faux ;
   - « Choisir un autre fichier » revient à la source ;
   - une réponse `422 import_has_errors` à la confirmation réaffiche l'aperçu avec le message.
-- [ ] T038 [US2] Dans `web/functional/Authoring/app/components/QuestionImportPreview.vue` et
+- [X] T038 [US2] Dans `web/functional/Authoring/app/components/QuestionImportPreview.vue` et
   `web/functional/Authoring/app/components/QuestionImportRow.vue`, ajouter :
   - le résumé des lignes à corriger, avec les ancres `id="ligne-N"` ;
   - les erreurs d'ensemble ;
@@ -406,7 +406,7 @@ puis à la fin du sujet.
 
 ### Tests (écrits d'abord, en échec)
 
-- [ ] T039 [P] [US3] Créer `back/functional/catalog/tests/fixtures/import/anki.txt`
+- [X] T039 [P] [US3] Créer `back/functional/catalog/tests/fixtures/import/anki.txt`
   (`#separator:tab`, `#html:true`, puis des lignes tabulées) et
   `back/functional/catalog/tests/fixtures/import/quizlet.txt`. Compléter
   `back/functional/catalog/tests/Feature/QuestionImportPreviewTest.php` et
@@ -416,7 +416,7 @@ puis à la fin du sujet.
   - cellule multiligne entre guillemets, comme la copie de Google Sheets → une seule cellule ;
   - texte sans tabulation → `422 import_single_column` ;
   - confirmation par JSON avec `import_id` → `201` (FR-005, US3-1 à US3-4).
-- [ ] T040 [P] [US3] Compléter `web/functional/Authoring/tests/QuestionImportPage.nuxt.spec.ts` :
+- [X] T040 [P] [US3] Compléter `web/functional/Authoring/tests/QuestionImportPage.nuxt.spec.ts` :
   - l'onglet « Coller » envoie `{ text }` à l'aperçu par `useApiFetch`, puis
     `{ text, import_id }` à l'import ;
   - un texte vide n'est pas envoyé ;
@@ -424,11 +424,11 @@ puis à la fin du sujet.
 
 ### Implémentation
 
-- [ ] T041 [US3] Dans `back/functional/catalog/src/Import/SourceReader.php`, ajouter
+- [X] T041 [US3] Dans `back/functional/catalog/src/Import/SourceReader.php`, ajouter
   `fromText(string $text)` : `SourceDecoder::decode()`, séparateur tabulation imposé,
   `import_single_column` si aucune ligne n'a de tabulation. Brancher `text` dans
   `PreviewQuestionImportController` et `ImportQuestions`. Faire passer T039.
-- [ ] T042 [US3] Dans `web/functional/Authoring/app/composables/useQuestionImport.ts`, ajouter
+- [X] T042 [US3] Dans `web/functional/Authoring/app/composables/useQuestionImport.ts`, ajouter
   `previewText(text)` et la confirmation par `useApiFetch()` (`POST`, JSON). Dans
   `web/functional/Authoring/app/components/QuestionImportSource.vue`, ajouter l'onglet
   « Coller », avec une zone de texte (`v-textarea`) et l'aide « copiez deux colonnes depuis votre
@@ -450,7 +450,7 @@ cartes.
 
 ### Tests (écrits d'abord, en échec)
 
-- [ ] T043 [P] [US4] Test `back/functional/learning/tests/Feature/SubjectLearnersTest.php` sur
+- [X] T043 [P] [US4] Test `back/functional/learning/tests/Feature/SubjectLearnersTest.php` sur
   `GET /api/learning/subjects/{subject}/learners` :
   - sujet appris par un autre inscrit → `{ has_learners: true }` ;
   - sujet appris seulement par son auteur → `true` ;
@@ -459,7 +459,7 @@ cartes.
   - autre inscrit → `403` ou `404` ;
   - visiteur → `401` ;
   - aucun nombre ni aucune identité dans la réponse (FR-019, R8).
-- [ ] T044 [P] [US4] Test
+- [X] T044 [P] [US4] Test
   `back/functional/learning/tests/Feature/ImportedQuestionsReachLearnersTest.php` : un sujet
   publié appris par 2 inscrits, dans deux fuseaux différents, reçoit 30 questions par
   `POST /api/subjects/{subject}/question-import`. Résultat attendu :
@@ -467,7 +467,7 @@ cartes.
     aujourd'hui dans le fuseau de chacun ;
   - les cartes existantes gardent leur boîte et leur date ;
   - un import rejeté (`import_has_errors`) ne crée aucune carte (FR-020, US4-2).
-- [ ] T045 [P] [US4] Compléter `web/functional/Authoring/tests/QuestionImportPage.nuxt.spec.ts` :
+- [X] T045 [P] [US4] Compléter `web/functional/Authoring/tests/QuestionImportPage.nuxt.spec.ts` :
   - `learning/subjects/{id}/learners` est appelé à l'ouverture ;
   - si `has_learners` est vrai, l'aperçu affiche l'avertissement « Les questions importées
     entreront en boîte 1 chez les personnes qui apprennent ce sujet, à réviser dès aujourd'hui » ;
@@ -476,14 +476,14 @@ cartes.
 
 ### Implémentation
 
-- [ ] T046 [US4] Créer
+- [X] T046 [US4] Créer
   `back/functional/learning/src/Http/Controllers/SubjectLearnersController.php`
   (`Gate::authorize('update', $subject)`, puis `Learning::query()->where('subject_id',
   …)->exists()`), et déclarer `Route::get('learning/subjects/{subject}/learners', …)` dans le
   groupe `auth:sanctum` de `back/functional/learning/routes/api.php`. Faire passer T043. T044 doit
   passer sans autre code, par le chemin `QuestionCreated` → `AddQuestionToLearners` (R7). Sinon,
   corriger `ImportQuestions`, pas le chemin Leitner.
-- [ ] T047 [US4] Dans `web/functional/Authoring/app/composables/useQuestionImport.ts`, lire
+- [X] T047 [US4] Dans `web/functional/Authoring/app/composables/useQuestionImport.ts`, lire
   `hasLearners` par `useApiFetch('/learning/subjects/{id}/learners')`. Dans
   `web/functional/Authoring/app/components/QuestionImportPreview.vue`, afficher l'avertissement
   avec `AccountNotice` (`tone="info"`). Ajouter la clé à
@@ -495,10 +495,10 @@ cartes.
 
 ## Phase 7: Polish & vérifications transverses
 
-- [ ] T048 [P] Test de performance dans `back/functional/catalog/tests/Feature/QuestionImportPreviewTest.php` :
+- [X] T048 [P] Test de performance dans `back/functional/catalog/tests/Feature/QuestionImportPreviewTest.php` :
   l'aperçu d'un XLSX de 500 lignes, chacune avec du gras et une liste, répond en moins de 3 s
   (SC-004).
-- [ ] T049 [P] Test dans `back/functional/catalog/tests/Feature/QuestionImportTest.php` pour
+- [X] T049 [P] Test dans `back/functional/catalog/tests/Feature/QuestionImportTest.php` pour
   SC-006 : des cellules `<script>alert(1)</script>`, `<img src=x onerror=alert(1)>`,
   `[x](javascript:alert(1))` et `<a href="javascript:…">` sont importées comme du texte ou
   retirées. Aucun `<script>`, `onerror` ni `javascript:` dans `recto_html` ou `verso_html`
@@ -517,6 +517,49 @@ cartes.
 - [ ] T053 Fusionner en avance rapide, back puis web (constitution, flux de travail). Vérifier
   d'abord les principes III, IV et VI. Si `origin/main` a avancé et que l'avance rapide est
   impossible, s'arrêter et le signaler.
+
+### État des finitions (2026-10-02, 00 h 15)
+
+- **T050** : vérifié à la lecture du CSS, pas dans un navigateur. Les cartes de l'aperçu passent
+  en une colonne sous 600 px, sans largeur minimale. `RichTextView` coupe les mots longs
+  (`overflow-wrap: anywhere`) et fait défiler le code dans son propre bloc. Les boutons sont en
+  `size="large"`. Reste à le voir dans un navigateur à 360 px.
+- **T051** : Pint, ESLint et Prettier sont verts. Le web passe 270 tests sur 270, le back 576
+  sur 579. Les 3 échecs sont des tests préexistants de la couche learning :
+  - `test_the_learnings_count_their_cards_and_belong_to_their_learner` ;
+  - `test_the_due_cards_are_those_of_the_chosen_subjects_most_overdue_first` ;
+  - `test_the_card_shows_where_it_went_after_an_answer`.
+
+  Ils échouent aussi sur `origin/main`, vérifié dans un worktree : entre minuit et 2 h, heure de
+  Paris, la date UTC n'est pas encore celle de Paris. Ce n'est pas un effet de l'import, mais la
+  suite doit être verte avant T053.
+- **T052** : non fait. Ce parcours demande de vrais exports d'Excel, de LibreOffice, de Google
+  Sheets, d'Anki et de Quizlet, ouverts dans un navigateur à 360 px.
+
+### Écarts entre les tâches et l'implémentation
+
+- **T001** : `openspout/openspout` s'installe en **5.12**, version stable la plus récente (le plan
+  prévoyait 4.x). Son API de lecture diffère : cellules par `Row::$cells`, valeur calculée d'une
+  formule par `FormulaCell::getComputedValue()`.
+- **T015** : seules les fixtures CSV, TXT et PDF sont des fichiers. Elles sont générées depuis
+  `questions.json`, octet pour octet selon chaque tableur, et `.gitattributes` les garde en
+  `-text` pour que Git ne touche pas à leurs fins de ligne. Les XLSX sont construits par
+  `tests/Concerns/MakesImportSources.php` avec OpenSpout, en chaînes partagées ou en ligne, et la
+  valeur calculée de la formule est ajoutée à la main, comme Excel l'écrit.
+- **T022** : la taille et le contenu du fichier ne sont pas des règles de la requête.
+  `SourceReader` les contrôle pour répondre avec les codes du contrat (`import_too_large`,
+  `import_unreadable`) plutôt qu'avec des erreurs de champ. Un PDF renommé `.csv` est refusé sur
+  son type réel.
+- **T023** : le droit (`Gate`) est vérifié avant la reconnaissance d'un `import_id` déjà
+  importé, et le verrou du sujet retiré après. Une personne sans droit n'apprend donc rien d'un
+  `import_id`.
+- **T041** : déjà en place avant US3. `fromText()` est venu avec T011, et le champ `text` avec
+  T022. Les tests de T039 sont passés sans code de plus.
+- **T037, T038** : le bouton qui revient à la source s'appelle « Changer de source », et non
+  « Choisir un autre fichier », parce qu'il sert aussi au texte collé.
+- **Correctif trouvé en route** : `useUploadRequest` rejette déjà avec une `IApiError`. La
+  repasser dans `toApiError` remplaçait le message de l'API par le message générique.
+  `useQuestionImport` distingue les deux cas.
 
 ---
 
