@@ -111,11 +111,11 @@ Le dernier compte qui dispose de droits d'administration (modération ou gestion
 ### Edge Cases
 
 - **Demande pendant une séance de révision sur un autre appareil** : la réponse suivante envoyée depuis cet appareil est refusée comme celle d'une personne déconnectée ; elle n'est pas enregistrée.
-- **Signalement en attente sur un sujet de la personne, avec « Tout effacer »** : le sujet devient introuvable ; le signalement reste dans la file de modération, rattaché à « Sujet supprimé », et peut être classé.
+- **Signalement en attente sur un sujet de la personne, avec « Tout effacer »** : pendant le délai, la modération voit toujours le sujet masqué et peut traiter le signalement ; à l'effacement, les signalements du sujet sont supprimés avec lui, comme pour tout sujet supprimé (feature 001).
 - **Sujet de la personne retiré par la modération pendant le délai, avec « Laisser mes sujets publiés »** : le retrait s'applique comme pour tout sujet ; à l'effacement, un sujet retiré n'est pas conservé, puisque seuls les sujets publiés le sont.
 - **Personne qui apprend son propre sujet** : sa progression est effacée avec le reste ; le sujet suit le choix fait pour ses sujets publiés.
 - **Lien de rappel ou de désinscription reçu avant la demande** : le lien de rappel mène à la connexion, et se connecter annule la demande ; le lien de désinscription d'un compte en cours de suppression ou effacé affiche la page de lien non valide de la feature 002, sans révéler l'état du compte.
-- **Inscription avec l'adresse d'un compte en cours de suppression** : elle reçoit la réponse neutre habituelle, comme pour toute adresse déjà prise ; aucun message ne révèle qu'une suppression est en cours.
+- **Inscription avec l'adresse d'un compte en cours de suppression** : elle reçoit exactement la même réponse que pour toute adresse déjà prise ; aucun message ne révèle qu'une suppression est en cours.
 - **Mot de passe oublié pendant le délai** : la réinitialisation fonctionne ; la connexion qui suit annule la demande (User Story 3).
 - **Échec de l'email de confirmation** : la demande reste enregistrée et la page de confirmation à l'écran donne la même information que l'email.
 - **Effacement qui échoue en cours de route** : rien n'est effacé à moitié ; l'effacement est repris à la passe suivante jusqu'à réussir, et l'échec est signalé à l'équipe technique.
@@ -138,7 +138,7 @@ Le dernier compte qui dispose de droits d'administration (modération ou gestion
 - **FR-006**: Dès la demande confirmée, le système DOIT déconnecter la personne sur tous ses appareils et refuser toute action de ce compte jusqu'à une nouvelle connexion.
 - **FR-007**: Dès la demande confirmée, aucun rappel NE DOIT partir pour ce compte, sur aucun canal.
 - **FR-008**: Dès la demande confirmée, les brouillons, sujets dépubliés et sujets retirés de la personne DOIVENT devenir introuvables pour tout le monde, au même titre qu'un brouillon pour une personne non autorisée.
-- **FR-009**: Avec « Tout effacer », dès la demande confirmée, ses sujets publiés DOIVENT devenir introuvables pour tout le monde ; leurs cartes ne sont plus proposées en séance ni comptées dans les rappels de quiconque.
+- **FR-009**: Avec « Tout effacer », dès la demande confirmée, ses sujets publiés DOIVENT devenir introuvables pour tout le monde, sauf pour la modération qui peut encore traiter leurs signalements ; leurs cartes ne sont plus proposées en séance ni comptées dans les rappels de quiconque.
 - **FR-010**: Avec « Laisser mes sujets publiés », dès la demande confirmée, ses sujets publiés DOIVENT rester consultables et apprenables, attribués à « Auteur supprimé » partout où le nom de l'auteur apparaît.
 - **FR-011**: Le nom de la personne NE DOIT plus apparaître nulle part, pour personne, entre la demande confirmée et une éventuelle annulation.
 - **FR-012**: Le système DOIT envoyer un email qui confirme la demande, donne la date d'effacement définitif et explique qu'une connexion avant cette date annule la suppression.
@@ -156,13 +156,13 @@ Le dernier compte qui dispose de droits d'administration (modération ou gestion
 - **FR-018**: Avec « Tout effacer », l'effacement DOIT supprimer ses sujets, leurs questions et leurs images, ainsi que la progression de toutes les personnes sur ces sujets.
 - **FR-019**: Avec « Laisser mes sujets publiés », l'effacement DOIT conserver ses sujets publiés, leurs questions et leurs images, attribués à « Auteur supprimé », sans toucher à la progression des personnes qui les apprennent ; ses autres sujets sont supprimés.
 - **FR-020**: Les signalements déposés par la personne et les décisions de modération qu'elle a prises DOIVENT être conservés, attribués à « Compte supprimé ».
-- **FR-021**: Un signalement ou une décision de modération qui porte sur un sujet effacé DOIT rester dans l'historique, rattaché à « Sujet supprimé ».
+- **FR-021**: L'effacement d'un sujet DOIT suivre la règle de la feature 001 : ses signalements sont supprimés avec lui, et les décisions de modération qui le concernent restent dans l'historique avec son titre.
 - **FR-022**: L'effacement DOIT être complet ou ne pas avoir lieu ; un effacement interrompu est repris jusqu'à réussir.
 - **FR-023**: Après l'effacement, l'adresse email DOIT redevenir libre pour une nouvelle inscription, sans lien avec l'ancien compte.
 
 **Confidentialité**
 
-- **FR-024**: Aucune réponse du système (inscription, connexion, mot de passe oublié, lien de désinscription) NE DOIT révéler qu'un compte est en cours de suppression ou a été effacé.
+- **FR-024**: Aucune réponse du système (inscription, connexion, mot de passe oublié, lien de désinscription) NE DOIT permettre de distinguer un compte en cours de suppression d'un compte actif, ni un compte effacé d'une adresse jamais utilisée.
 - **FR-025**: Les textes de l'écran de suppression, de la page de confirmation et de l'email DOIVENT être en français, en vouvoyant la personne.
 
 ### Key Entities
@@ -181,7 +181,7 @@ Le dernier compte qui dispose de droits d'administration (modération ou gestion
 - **SC-003**: 30 jours et 24 heures après une demande non annulée, aucune donnée ne permet de retrouver le nom, l'adresse email ou la progression de la personne. Ceci est vérifié par des tests qui couvrent chaque donnée de FR-017.
 - **SC-004**: Une annulation rétablit 100 % de ce qui existait au moment de la demande. Ceci est vérifié par des tests qui couvrent chaque élément de FR-015.
 - **SC-005**: Avec « Laisser mes sujets publiés », 100 % des personnes qui apprenaient ces sujets gardent leur progression, de la demande à l'effacement et au-delà.
-- **SC-006**: Aucune réponse du système ne permet de distinguer un compte en cours de suppression ou effacé d'une adresse inconnue ou déjà prise. Ceci est vérifié par des tests qui couvrent chaque cas de FR-024.
+- **SC-006**: Aucune réponse du système ne permet de distinguer un compte en cours de suppression d'un compte actif, ni un compte effacé d'une adresse jamais utilisée. Ceci est vérifié par des tests qui couvrent chaque cas de FR-024.
 
 ## Assumptions
 
@@ -190,6 +190,6 @@ Le dernier compte qui dispose de droits d'administration (modération ou gestion
 - **Délai de 30 jours** : un délai d'usage pour ce type de service, qui laisse le temps de changer d'avis sans conserver les données plus longtemps que nécessaire.
 - **Aucun email à l'effacement définitif** : une fois le compte effacé, CINQ n'a plus de raison de contacter la personne ; l'email de la demande donne déjà la date.
 - **Dernier compte d'administration** : la règle tient tant qu'aucun écran ne permet de nommer un administrateur ; elle sera revue si un tel écran est livré.
-- **Adresse email pendant le délai** : elle reste prise ; une inscription avec cette adresse reçoit la réponse neutre de la feature 001.
+- **Adresse email pendant le délai** : elle reste prise ; une inscription avec cette adresse reçoit la même réponse que pour toute adresse déjà prise (feature 001). Cette réponse indique aujourd'hui que l'adresse est utilisée, ce qui s'écarte du principe VI de la constitution ; l'écart date de la feature 001 et sera traité à part.
 - **Personnes qui apprenaient un sujet effacé** : elles ne reçoivent aucune notification ; le sujet disparaît de leurs révisions comme un sujet dépublié (feature 001).
 - **Contenu laissé à la communauté** : un sujet signé « Auteur supprimé » ne peut plus être modifié par personne ; seule la modération peut encore le retirer.
