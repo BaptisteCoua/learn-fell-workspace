@@ -507,14 +507,14 @@ cartes.
   qu'il n'y a aucun défilement horizontal : une cellule de code longue passe à la ligne ou défile
   dans son propre bloc, et les liens et URL longs sont coupés. Vérifier aussi les cibles tactiles
   d'au moins 44 px et le focus visible (FR-023, constitution V).
-- [ ] T051 Lancer `./vendor/bin/sail bin pint --dirty` et `./vendor/bin/sail artisan test` dans
+- [X] T051 Lancer `./vendor/bin/sail bin pint --dirty` et `./vendor/bin/sail artisan test` dans
   `back/`, puis `pnpm lint`, `pnpm exec prettier --check .` et `pnpm test` dans `web/`. Tout doit
   être vert.
 - [ ] T052 Dérouler les parcours manuels 1 à 8 de `specs/008-question-import/quickstart.md` à
   360 px, avec de vrais exports d'Excel en français, de LibreOffice, de Google Sheets, d'Anki et de
   Quizlet. Noter les résultats sous une section « Résultats des parcours manuels » de ce fichier.
   Tout écart est corrigé dans le code ou remonté dans la spec, jamais contourné.
-- [ ] T053 Fusionner en avance rapide, back puis web (constitution, flux de travail). Vérifier
+- [X] T053 Fusionner en avance rapide, back puis web (constitution, flux de travail). Vérifier
   d'abord les principes III, IV et VI. Si `origin/main` a avancé et que l'avance rapide est
   impossible, s'arrêter et le signaler.
 
@@ -535,6 +535,23 @@ cartes.
   suite doit être verte avant T053.
 - **T052** : non fait. Ce parcours demande de vrais exports d'Excel, de LibreOffice, de Google
   Sheets, d'Anki et de Quizlet, ouverts dans un navigateur à 360 px.
+
+### Fusion (2026-10-02, 00 h 30)
+
+- **Avant la fusion**, deux commits de plus sur la branche :
+  - `Pin the clock of the review tests that compare dates with today` : les 3 tests de la
+    couche learning sont placés à midi UTC, qui tombe le même jour à Paris.
+  - `Answer not found for the import of a subject the user cannot read` : l'aperçu, l'import et
+    `has_learners` répondaient 403 sur le brouillon d'un autre auteur, ce qui révélait son
+    existence (principe VI). Ils répondent désormais 404, quel que soit le corps envoyé :
+    `QuestionImportRequest::authorize()` passe avant la validation.
+- **`origin/main` avait avancé** dans les deux repos avec les commits Railway du développeur.
+  Avec son accord, les branches ont été rebasées dessus, sans conflit. Toutes les suites ont été
+  relancées (back 581 sur 581, web 270 sur 270, Pint, ESLint et Prettier), puis les branches ont
+  été fusionnées en avance rapide et poussées, le back d'abord.
+- **T052** : le développeur a fait le parcours du texte collé (10 questions sur Git). Les
+  parcours avec de vrais exports de chaque tableur restent à faire, comme **T050** dans un
+  navigateur.
 
 ### Écarts entre les tâches et l'implémentation
 
